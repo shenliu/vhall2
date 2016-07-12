@@ -1,0 +1,31 @@
+{
+  "name": "vhall",
+  "version": "2.0.0",
+  "description": "vhall 2.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --hot --progress --colors",
+    "build": "webpack --progress --colors"
+  },
+  "repository": {
+    "type": "git",
+    "url": ".."
+  },
+  "keywords": [
+    "stream",
+    "webpack"
+  ],
+  "author": "shen",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "css-loader": "^0.23.1",
+    "jade": "^1.11.0",
+    "jade-loader": "^0.8.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {}
+}
