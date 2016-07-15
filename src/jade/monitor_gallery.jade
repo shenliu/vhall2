@@ -1,0 +1,26 @@
+//-
+   Created by shen on 2016/6/23.
+
+extends _main
+
+block title
+    title 视频截图
+
+//- 引入 模态对话框
+include _modal
+
+block content
+    div.ui.main.container.raised.segment#container.vh-container
+        h2(class="ui header vh-table")
+            i(class="photo icon")
+            div(class="content") 视频截图
+
+        div.ui.grid.container.vh-monitor-gallery._3d
+
+    +modal('vh-modal-player large', '播放', true, false, true)
+        include _embed
+
+    script.
+        function imgError(o) {
+            o.src = "images/white-image.png";
+        }

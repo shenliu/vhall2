@@ -1,0 +1,28 @@
+//-
+   Created by shen on 2016/5/26.
+
+div(class="ui attached menu vh-main-header")
+    div.ui.container
+        a.item.vh-main-header-monitor-stream(href="monitor_stream.html")
+            |流状态监控
+        a.item.vh-main-header-monitor-error-stat(href="monitor_error_stat.html")
+            |错误统计
+        a.item.vh-main-header-monitor-log-search(href="monitor_log_search.html")
+            |日志查询
+        a.item.vh-main-header-monitor-duplicate-stream(href="monitor_duplicate_stream.html")
+            |重复推流列表
+        a.item.vh-main-header-monitor-gallery(href="monitor_gallery.html")
+            |视频截图
+        //-a.item.vh-main-header-monitor-gallery-yolo(href="monitor_gallery_yolo.html")
+            |视频截图(Yolo)
+        a.item.vh-main-header-monitor-online-users(href="monitor_online_users.html")
+            |在线用户
+        a.item.vh-main-header-monitor-doc-conversion(href="monitor_doc_conversion.html")
+            |文档转换
+
+    script.
+        var path = location.pathname;
+        var offset = path.lastIndexOf("/");
+        var name = path.slice(offset + 1, -".html".length);
+        var a = document.querySelector(".vh-main-header-" + name.replace(/_/g, "-"));
+        a && (a.className += " vh-main-header-current");
