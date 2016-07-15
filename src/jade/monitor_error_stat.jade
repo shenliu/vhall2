@@ -1,0 +1,60 @@
+//-
+   Created by shen on 2016/6/12.
+
+extends _main
+
+block title
+    title 错误统计
+
+//- 引入 模态对话框
+include _modal
+
+block content
+    div.ui.main.container.raised.segment#container.vh-container
+        h2(class="ui header")
+            i(class="bar chart icon")
+            div(class="content") 错误统计
+
+        div.ui.vertically.divided.grid
+            div.one.column.row
+                div.column
+                    div.vh-error-stat-overview
+            div.one.column.row
+                h3.ui.header.vh-error-stat-header-pie.center.aligned(style="margin:0 auto;")
+            div.five.column.row.divided
+                div.column
+                    h5.ui.header(data-module='20') 第三方
+                    div.vh-error-stat-modules.vh-error-stat-modules-20
+                div.column
+                    h5.ui.header(data-module='1') 助手
+                    div.vh-error-stat-modules.vh-error-stat-modules-1
+                div.column
+                    h5.ui.header(data-module='5') 移动发起
+                    div.vh-error-stat-modules.vh-error-stat-modules-5
+                div.column
+                    h5.ui.header(data-module='2') srs
+                    div.vh-error-stat-modules.vh-error-stat-modules-2
+                div.column
+                    h5.ui.header(data-module='11') srs分发
+                    div.vh-error-stat-modules.vh-error-stat-modules-11
+            div.five.column.row.divided
+                div.column
+                    h5.ui.header(data-module='16') 多码流转码
+                    div.vh-error-stat-modules.vh-error-stat-modules-16
+                div.column
+                    h5.ui.header(data-module='12') 切片
+                    div.vh-error-stat-modules.vh-error-stat-modules-12
+                div.column
+                    h5.ui.header(data-module='13') 同步
+                    div.vh-error-stat-modules.vh-error-stat-modules-13
+                div.column
+                    h5.ui.header(data-module='14') 回放
+                    div.vh-error-stat-modules.vh-error-stat-modules-14
+
+            div.one.column.row
+                div.column
+                    h3.ui.header.vh-error-stat-header-col.center.aligned(style="margin:0 auto;")
+                    div.vh-error-stat-host
+
+    +modal('vh-modal-log_search fullscreen long', '日志查询', true, false, true)
+        include _embed

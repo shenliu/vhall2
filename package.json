@@ -52,6 +52,7 @@
     "webpack-hot-middleware": "^2.12.1"
   },
   "dependencies": {
+    "echarts": "^3.2.2",
     "jquery": "^3.1.0",
     "lodash": "^4.13.1"
   }
