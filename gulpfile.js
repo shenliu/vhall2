@@ -13,14 +13,14 @@ const debug = process.env.NODE_ENV !== 'production';
 
 // 清空dev dev
 gulp.task('clean', function() {
-    return del('dev/**/*') && del('dev/**/*');
+    return del('dev/**/*') && del('dist/**/*');
 });
 
 //---------------------------------------------------------------//
 
 // 一些必要的工作
 gulp.task('todo', function() {
-    var path = debug ? './dev/' : './dev';
+    var path = debug ? './dev/' : './dist/';
     // 拷贝player目录到dev
     gulp.src('./player/**/*').pipe(gulp.dest(path + 'player/'));
     // 拷贝images目录到dev

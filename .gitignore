@@ -9,3 +9,4 @@ src/css/*.css
 del.bat
 bak/
 player/
+*.py
