@@ -5,43 +5,33 @@ var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig = require("./webpack.config.js");
 
 var del = require('del');
+var uglify = require('gulp-uglify');
 
 var sequence = require('gulp-sequence');
 
-// 清空dist
+const debug = process.env.NODE_ENV !== 'production';
+
+// 清空dev dev
 gulp.task('clean', function() {
-    return del('dist/**/*');
+    return del('dev/**/*') && del('dev/**/*');
 });
 
 //---------------------------------------------------------------//
 
 // 一些必要的工作
 gulp.task('todo', function() {
-    // 拷贝player目录到dist
-    gulp.src('player/**/*').pipe(gulp.dest('dist/player/'));
-    // 拷贝images目录到dist
-    gulp.src('src/images/**/*').pipe(gulp.dest('dist/images/'));
+    var path = debug ? './dev/' : './dev';
+    // 拷贝player目录到dev
+    gulp.src('./player/**/*').pipe(gulp.dest(path + 'player/'));
+    // 拷贝images目录到dev
+    gulp.src('./src/images/**/*').pipe(gulp.dest(path + 'images/'));
 });
 
 //---------------------------------------------------------------//
 
-// The development server (the recommended option for development)
 gulp.task("default", sequence(["clean"], ["build-dev"], ["todo"], "webpack-dev-server"));
 
-//---------------------------------------------------------------//
-
-// Build and watch cycle (another option for development)
-// Advantage: No server required, can run app from filesystem
-// Disadvantage: Requests are not blocked until bundle is available,
-//               can serve an old app on refresh
-gulp.task("build-dev", ["webpack:build-dev"], function() {
-    gulp.watch(["src/**/*"], ["webpack:build-dev"]);
-});
-
-//---------------------------------------------------------------//
-
-// Production build
-gulp.task("build", ["webpack:build"]);
+gulp.task('dist', sequence(["clean"], ["webpack:build"], ["todo"]));
 
 //---------------------------------------------------------------//
 
@@ -49,12 +39,6 @@ gulp.task("webpack:build", function(callback) {
     // modify some webpack config options
     var myConfig = Object.create(webpackConfig);
     myConfig.plugins = myConfig.plugins.concat(
-        new webpack.DefinePlugin({
-            "process.env": {
-                // This has effect on the react lib size
-                "NODE_ENV": JSON.stringify("production")
-            }
-        }),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({ //压缩代码
             compress: {
@@ -72,6 +56,16 @@ gulp.task("webpack:build", function(callback) {
         }));
         callback();
     });
+});
+
+//---------------------------------------------------------------//
+
+// Build and watch cycle (another option for development)
+// Advantage: No server required, can run app from filesystem
+// Disadvantage: Requests are not blocked until bundle is available,
+//               can serve an old app on refresh
+gulp.task("build-dev", ["webpack:build-dev"], function() {
+    gulp.watch(["src/**/*"], ["webpack:build-dev"]);
 });
 
 //---------------------------------------------------------------//

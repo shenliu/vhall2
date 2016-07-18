@@ -12,6 +12,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
  */
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const debug = process.env.NODE_ENV !== 'production';
+
 module.exports = {
     entry: { //配置入口文件,有几个写几个
         monitor_stream: './src/scripts/page/monitor_stream.js',
@@ -27,8 +29,8 @@ module.exports = {
         vendor_table: ['./src/scripts/lib/jquery.dataTables.min.js']
     },
     output: {
-        path: path.join(__dirname, 'dist'), //输出目录的配置,模板 样式 脚本 图片等资源的路径配置都相对于它
-        publicPath: '/dist/',               //模板 样式 脚本 图片等资源对应的在server上的路径
+        path: path.join(__dirname, debug ? 'dev' : "dist"), //输出目录的配置,模板 样式 脚本 图片等资源的路径配置都相对于它
+        publicPath: debug ? '/dev/' : "/dist/",   //模板 样式 脚本 图片等资源对应的在server上的路径
         filename: 'js/[name].js',           //每个页面对应的主js的生成配置
         chunkFilename: 'js/[id].chunk.js?[chunkhash]'   //chunk生成的配置
     },
