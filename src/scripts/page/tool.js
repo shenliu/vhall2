@@ -2,6 +2,8 @@
  * Created by shen on 2016/7/14.
  */
 
+import {Constant} from './constant';
+
 var base64EncodeChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 var base64DecodeChars = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -211,7 +213,7 @@ function dateFormat(date, fmt) {
 
 export var Tool = {
     xhr_get: function (url, done, fail) {
-        $.ajax({
+        return $.ajax({
             type: "GET",
             url: url,
             dataType: "json"
@@ -222,6 +224,43 @@ export var Tool = {
         }).fail(function (jqXHR, textStatus, errorThrown) {
             fail && fail(jqXHR, textStatus, errorThrown);
         });
+    },
+
+    xhr_post: function(url, data, done, fail) {
+        return $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "json"
+            ,data: JSON.stringify(data),
+            //contentType: "application/json"
+        }).done(function (data, textStatus, jqXHR) {
+            done(data, textStatus, jqXHR);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            fail && fail(jqXHR, textStatus, errorThrown);
+        });
+    },
+
+    /*
+     * 初始化Message module
+     */
+    initMessage: function() {
+
+    },
+
+    getMessage: function(key) {
+        return Constant.message[key];
+    },
+
+    getMessages: function() {
+        return Constant.message;
+    },
+
+    getModule: function(key) {
+        return Constant.modules[key];
+    },
+
+    getModules: function() {
+        return Constant.modules;
     },
 
     stripHTML: stripHTML,

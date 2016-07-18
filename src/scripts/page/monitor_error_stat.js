@@ -46,14 +46,14 @@ function monitor_error_overview() {
         var series = [];
         $.each(_datas, function (k, v) {
             series.push({
-                name: Constant.modulesAll[k],
+                name: Tool.getModule(k),
                 type: "bar",
                 stack: '总量',
                 data: v
             });
         });
         var legend = _.map(_.keys(_datas), function (i) {
-            return Constant.modulesAll[i];
+            return Tool.getModule(i);
         });
         var dom = $(".vh-error-stat-overview")[0];
         var axis = _.keys(errorStatData);
@@ -111,10 +111,10 @@ function monitor_error_overview_graph(dom, axis, legend, series, doEvent) {
 function monitor_error_oneday() {
     Tool.xhr_get(Constant.url.monitor_error_stat_oneday, function (data, textStatus, jqXHR) {
         $.each(data, function (k, v) { // k: 1, 2, 11, 12, ... v: {14002: 29, ...}
-            var name = Constant.modules[k], sum = 0;
+            var name = Tool.getModule(k), sum = 0;
             var legend = [], vals = [], series = [];
             $.each(v, function (i, j) { // i: 14002  j: 29
-                var _s = i + " " + Constant.message[i];
+                var _s = i + " " + Tool.getMessage(i);
                 legend.push(_s);
                 vals.push({
                     value: j,
@@ -246,7 +246,7 @@ function monitor_error_modules_event(myChart) {
                 });
             });
 
-            $(".vh-error-stat-header-col").html(code + ": " + Constant.message[code]);
+            $(".vh-error-stat-header-col").html(code + ": " + Tool.getMessage(code));
 
             var dom = $(".vh-error-stat-host")[0];
 
@@ -256,7 +256,7 @@ function monitor_error_modules_event(myChart) {
                 instance.dispose();
             }
 
-            curModule = _.invert(Constant.modules)[module]; // 当前的模块id
+            curModule = _.invert(Tool.getModules())[module]; // 当前的模块id
             curCode = code;
             monitor_error_overview_graph(dom, times, legend, series, monitor_error_host_event);
             dom.scrollIntoView();

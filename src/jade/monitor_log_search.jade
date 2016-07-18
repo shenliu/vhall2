@@ -1,0 +1,101 @@
+//-
+   Created by shen on 2016/7/18.
+
+extends _main
+
+block title
+    title 日志查询
+
+block content
+    div.ui.main.container.raised.segment#container.vh-container
+        h2(class="ui header vh-table")
+            i(class="search icon")
+            div(class="content") 日志查询
+
+        .ui.menu.vh-search-bar
+            span.item.header 查询:
+            .item
+                .ui.sub.header 流ID:
+                .ui.selection.dropdown.search.vh-search-id(style="width:2.5em;")
+                    input(type='hidden', name='search_id')
+                    i.dropdown.icon
+                    .default.text
+                    .menu
+
+                .ui.sub.header 主机:
+                .ui.selection.dropdown.search.vh-search-host(style="width:2.8em;")
+                    input(type='hidden', name='search_host')
+                    i.dropdown.icon
+                    .default.text
+                    .menu
+
+                .ui.sub.header 模块:
+                .ui.selection.dropdown.vh-search-module(style="width:100px;")
+                    input(type='hidden', name='search_module')
+                    i.dropdown.icon
+                    .default.text
+                    .menu
+
+                .ui.sub.header 错误代码:
+                .ui.input.vh-search-code(style="width:100px;")
+                    input(title='', type='text')
+            .item
+                .ui.vh-search-time.input
+                    .ui.sub.header 日期:
+                    input#vh-date(title='', type='text', style="width:100px;")
+
+                    .ui.sub.header 起始时间:
+                    input#vh-time-start(title='', type='text', style="width:80px;")
+
+                    .ui.sub.header 结束时间:
+                    input#vh-time-end(title='', type='text', style="width:80px;")
+
+                button.ui.button.blue.vh-search-btn 查询
+
+        table.ui.table.striped.celled.display.nowrap.compact.dataTable.vh-table-log-search(cellspacing='0', width='100%')
+            thead
+                tr
+                    th 流ID
+                    th 主机名
+                    th 模块
+                    th 错误代码
+                    th 时间
+                    th src_ip
+                    th ci
+                    th uid
+                    th log_id
+                    th tt
+                    th pid
+                    th si
+                    th log_session
+                    th s
+                    th sd
+                    th attr
+                    th type
+            tfoot
+                tr
+                    th 流ID
+                    th 主机名
+                    th 模块
+                    th 错误代码
+                    th 时间
+                    th src_ip
+                    th ci
+                    th uid
+                    th log_id
+                    th tt
+                    th pid
+                    th si
+                    th log_session
+                    th s
+                    th sd
+                    th attr
+                    th type
+            tbody
+
+    div.ui.warning.message.compact.hidden.vh-search-warning
+        i.close.icon
+        div.header 注意事项
+        ul.list
+            li 必须选择一个&lt;模块&gt;.
+            li 必须填写&lt;错误代码&gt;.

@@ -239,13 +239,16 @@ function _event() {
                 }
 
                 if (url) {
-                    $(".ui.modal.vh-modal-player")
-                        .modal({
+                    var modal = $(".ui.modal.vh-modal-player");
+                    modal.modal({
                             closable: true,
                             onShow: function() {
                                 $('.ui.embed').embed({
                                     url: encodeURI(url)
                                 });
+                            },
+                            onVisible: function() {
+                                modal.modal("refresh");
                             },
                             onHide: function() {
                                 var ifr = $("iframe")[0];
@@ -253,7 +256,7 @@ function _event() {
                                 $('.ui.embed').find(".embed").remove();
                             }
                         })
-                        .modal('setting', 'transition', "swing up")
+                        .modal('setting', 'transition', "slide down")
                         .modal('show').modal("refresh");
                 }
             }
