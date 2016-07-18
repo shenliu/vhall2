@@ -5,7 +5,6 @@ var WebpackDevServer = require("webpack-dev-server");
 var webpackConfig = require("./webpack.config.js");
 
 var del = require('del');
-var uglify = require('gulp-uglify');
 
 var sequence = require('gulp-sequence');
 
