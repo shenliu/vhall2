@@ -17,7 +17,7 @@ var showYolo = false;
 
 $(function() {
     // 识别yolo
-    var path = location.pathname;
+    var path = location.search;
     if (path.indexOf("yolo") !== -1) {
         showYolo = true;
     }
