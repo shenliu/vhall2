@@ -43,7 +43,10 @@ gulp.task("webpack:build", function(callback) {
             compress: {
                 warnings: false
             },
-            except: ['$super', '$', 'exports', 'require'] //排除关键字
+            comments: false,
+            mangle: {
+                except: ['$super', '$', 'exports', 'require']
+            }
         })
     );
 
