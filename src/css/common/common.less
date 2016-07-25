@@ -6,7 +6,7 @@
 @import "var";
 
 html, body {
-  font-size: 12px/1.5;
+  font-size: 12px;
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 }
 
@@ -59,7 +59,7 @@ html, body {
 }
 
 .error-table {
-  border: 1px solid #9f3a38!important;
+  border: 1px solid @danger!important;
   background: #fff6f6!important;
 
   thead, th, tr, td, input, textarea {
@@ -92,53 +92,32 @@ html, body {
   }
 }
 
-.vh-main-header.ui.menu {
-  background-color: #fff;
+/*** header ***/
+.vh-main-header {
   height: 30px;
-
-  .item {
-    font-size: 14px;
-    color: #999;
-  }
-
-  .link .item:hover, .dropdown.item:hover,
-  .link.item:hover, a.item:hover, .active.item {
-    cursor: pointer;
-    color: @vh;
-    border-bottom: 2px solid @vh;
-    background: none;
-  }
-
-  .item:before {
-    position: absolute;
-    content: '';
-    top: 30%;
-    right: 0;
-    height: 40%;
-    width: 1px;
-    background: #242424;
-    box-shadow: 1px 1px rgba(255, 255, 255, .6);
-  }
-
-  .right.item:before {
-    box-shadow: none;
-    background: #464646;
-  }
-
-  a[href="###"] {
-    color: #464646!important;
-    &:hover, &:active {
-      text-decoration: none;
+  border: none!important;
+  div.vh-header-bar {
+    height: 100%;
+    line-height: 30px;
+    background: @color-bg;
+    a {
+      color: @color-light-font!important;
+      display: inline-block;
+      padding: 0 5px;
+      &:hover {
+        color: @color-primary!important;
+      }
     }
-  }
 
-  a[href="##"] {
-    color: #fff!important;
-    &:hover, &:active {
-      text-decoration: none;
+    a.vh-main-header-current {
+      color: @color-primary!important;
+      font-weight: bold;
     }
   }
 }
+
+
+/*** end header ***/
 
 /** override **/
 .small {

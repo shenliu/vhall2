@@ -7,10 +7,6 @@ require("../../css/lib/jquery.dataTables.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 
-var semantic = require("semantic/semantic.min");
-
-//var _ = require('lodash');
-
 import {Constant} from './constant';
 
 import {Tool} from './tool';

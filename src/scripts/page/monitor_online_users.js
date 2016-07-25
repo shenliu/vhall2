@@ -8,10 +8,6 @@ require("semantic/semantic.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 
-var semantic = require("semantic/semantic.min");
-
-//var _ = require('lodash');
-
 var E = require("echarts/dist/echarts.min");
 
 import {Constant} from './constant';

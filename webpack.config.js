@@ -16,6 +16,7 @@ const debug = process.env.NODE_ENV !== 'production';
 
 module.exports = {
     entry: { //配置入口文件,有几个写几个
+        login: './src/scripts/page/login',
         monitor_stream: './src/scripts/page/monitor_stream.js',
         monitor_gallery: './src/scripts/page/monitor_gallery.js',
         monitor_error_stat: './src/scripts/page/monitor_error_stat.js',
@@ -24,9 +25,9 @@ module.exports = {
         monitor_online_users: './src/scripts/page/monitor_online_users.js',
         monitor_doc_conversion: './src/scripts/page/monitor_doc_conversion.js',
         vendor_base: ['jquery', 'lodash'],
-        vendor_ui: ['./node_modules/semantic/semantic.min'],
-        vendor_chart: ['./node_modules/echarts/dist/echarts.min'],
-        vendor_table: ['./src/scripts/lib/jquery.dataTables.min.js']
+        vendor_ui: ['semantic/semantic'],
+        vendor_chart: ['echarts/dist/echarts.min'],
+        vendor_table: ['./src/scripts/lib/jquery.dataTables.min']
     },
     output: {
         path: path.join(__dirname, debug ? 'dev' : "dist"), //输出目录的配置,模板 样式 脚本 图片等资源的路径配置都相对于它
@@ -71,6 +72,17 @@ module.exports = {
         new ExtractTextPlugin('css/[name].css'), //单独使用link标签加载css并设置路径,相对于output配置中的publickPath
         new webpack.HotModuleReplacementPlugin(), //热加载
         new webpack.NoErrorsPlugin(),
+
+        // login
+        new HtmlWebpackPlugin({
+            favicon: './src/images/favicon.ico',
+            filename: './login.html',
+            template: './src/jade/login.jade',
+            inject: 'body',
+            hash: true,
+            chunks: ['vendor_base', 'vendor_ui', 'login'],
+            chunksSortMode: 'dependency'
+        }),
 
         // 流状态监控
         new HtmlWebpackPlugin({ //根据模板插入css/js等生成最终HTML

@@ -3,8 +3,6 @@ require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 require("../../css/page/gallery.less");
 
-var semantic = require("semantic/semantic.min");
-
 var _ = require('lodash');
 
 import { Constant } from './constant';

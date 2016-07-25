@@ -8,10 +8,6 @@ require("../../css/lib/mobiscroll.custom-3.0.0.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 
-require("semantic/semantic.min");
-
-//var _ = require('lodash');
-
 require('../../scripts/lib/mobiscroll.custom-3.0.0.min');
 
 import {Constant} from './constant';
@@ -39,6 +35,13 @@ function _init(callback) {
     ).done(function (data_id, data_host) {
         data_id = JSON.parse(data_id[0]);
         data_host = JSON.parse(data_host[0]);
+
+        $('.ui.dropdown')
+            .dropdown({
+                allowAdditions: true,
+                forceSelection: false
+            });
+
         // 流ID
         html = ['<div class="item" data-value="">无</div>'];
         $(data_id).each(function (i, elem) {
@@ -53,8 +56,6 @@ function _init(callback) {
         });
         html.push('<div class="item" data-value="None">None</div>');
         $(".vh-search-host").find(".menu").html(html.join(""));
-
-        $(".ui.dropdown").dropdown();
 
         // 日期
         var now = new Date(),

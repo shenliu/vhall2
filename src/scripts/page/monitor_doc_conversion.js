@@ -7,13 +7,7 @@ require("../../css/lib/jquery.dataTables.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 
-require("semantic/semantic.min");
-
-//var _ = require('lodash');
-
 import {Constant} from './constant';
-
-//import {Tool} from './tool';
 
 $(function () {
     monitor_doc_conversion_table();

@@ -1,0 +1,23 @@
+@import "../common/var";
+
+.vh-main-header {
+  display: none!important;
+}
+
+.vh-login-box {
+  height: -webkit-calc(100% - 5px);
+
+  .column {
+    max-width: 450px;
+  }
+
+  .vh-color-bg {
+    background-color: @primary-bg;
+    color: @color-light-font;
+    &:hover {
+      background-color: @primary;
+      color: @color-light-font;
+    }
+  }
+
+}

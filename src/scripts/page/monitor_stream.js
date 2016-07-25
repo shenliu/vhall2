@@ -7,28 +7,13 @@ require("../../css/lib/jquery.dataTables.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 
-var semantic = require("semantic/semantic.min");
-
-var _ = require('lodash');
+import * as _ from 'lodash';
 
 var E = require("echarts/dist/echarts.min");
 
 import {Constant} from './constant';
 
 import {Tool} from './tool';
-
-/*
-   保存每个td中的数据
-   {
-        streamID: {
-            "1": [],
-            "2": [],
-            ...
-            "alluser": {}
-        }
-   }
- */
-var streamData = {};
 
 // init
 $(function() {
@@ -564,7 +549,7 @@ function _resetFilter() {
 }
 
 /**
- * 生成模版(id="tpl_td_list") 并向 streamData中填入数据
+ * 生成模版(id="tpl_td_list")
  * @param data  {Array}    每一个单元格td的数据 如: 直播助手
  * @param streamID {String}  作为key的streamID
  * @param k  {String}       模块编号
@@ -574,12 +559,6 @@ function _resetFilter() {
  */
 function _genList(data, streamID, k, tpl) {
     if (data["log_list"].length > 0) {
-        if (!(streamID in streamData)) {
-            streamData[streamID] = {};
-        }
-
-        streamData[streamID][k] = data;
-
         var arr = [];
 
         $.each(data["log_list"], function(idx, item) {
@@ -616,12 +595,6 @@ function _genList(data, streamID, k, tpl) {
 function _genCollect(data, type, k, tpl) {
     if (data["alluser"]["user"] > 0) {
         var streamID = data["streamid"];
-        if (!(streamID in streamData)) {
-            streamData[streamID] = {};
-        }
-
-        streamData[streamID][k] = data;
-
         var bad = data["baduser"][type];
         var all = data["alluser"][type];
         var arr = [];
