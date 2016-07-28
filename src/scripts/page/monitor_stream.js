@@ -64,7 +64,7 @@ function monitor_table() {
             data: "15",
             render: function(data, type, row, meta) {
                 if (data) {
-                    var url = data["now"]["attr"]["_m"]["url"];
+                    var url = data["image_url"];
                     var html = ["<img src='' data-src='", url, "' width='180' height='100' />"];
                     return html.join("");
                 } else
