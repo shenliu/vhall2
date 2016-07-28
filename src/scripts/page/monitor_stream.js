@@ -54,9 +54,11 @@ function monitor_table() {
             // 流ID idx: 0
             data: "streamid",
             render: function(data, type, row, meta) {
-                if (data)
-                    return data.substring(0, 32);
-                else
+                if (data) {
+                    var id = data.substring(0, 32);
+                    var html = ["<a href='monitor_channel_status.html?id=", id, "' target='_blank'>", id, "</a>"];
+                    return html.join("");
+                } else
                     return "-";
             }
         }, {

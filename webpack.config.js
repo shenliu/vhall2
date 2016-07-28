@@ -25,6 +25,7 @@ module.exports = {
         monitor_online_users: './src/scripts/page/monitor_online_users',
         monitor_doc_conversion: './src/scripts/page/monitor_doc_conversion',
         monitor_mod_management: './src/scripts/page/monitor_mod_management',
+        monitor_channel_status: './src/scripts/page/monitor_channel_status',
         vendor_base: ['jquery', './src/scripts/lib/jquery.cookie', 'lodash'],
         vendor_ui: ['semantic/semantic'],
         vendor_chart: ['echarts/dist/echarts.min'],
@@ -174,6 +175,17 @@ module.exports = {
             inject: 'body',
             hash: true,
             chunks: ['vendor_base', 'vendor_ui', 'vendor_table', 'monitor_mod_management'],
+            chunksSortMode: 'dependency'
+        }),
+
+        // 频道分时状态
+        new HtmlWebpackPlugin({
+            favicon: './src/images/favicon.ico',
+            filename: './monitor_channel_status.html',
+            template: './src/jade/monitor_channel_status.jade',
+            inject: 'body',
+            hash: true,
+            chunks: ['vendor_base', 'vendor_ui', 'vendor_table', 'vendor_chart', 'monitor_channel_status'],
             chunksSortMode: 'dependency'
         })
     ]

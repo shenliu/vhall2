@@ -1,0 +1,20 @@
+//
+   Created by shen on 2016/7/28.
+
+extends _main
+
+block title
+    title 频道分时状态
+
+//- 引入 模态对话框
+include _modal
+
+block content
+    div.ui.main.container.raised.segment#container.vh-container
+        h2(class="ui header vh-table")
+            i(class="sitemap icon")
+            div(class="content") 频道分时状态
+
+        h3.ui.header.dividing 人数/质量分时图
+        h3.ui.header.dividing 错误分时图
+        h3.ui.header.dividing 分时细节
