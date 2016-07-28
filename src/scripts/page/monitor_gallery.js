@@ -3,7 +3,7 @@ require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 require("../../css/page/gallery.less");
 
-var _ = require('lodash');
+import * as _ from 'lodash';
 
 import { Constant } from './constant';
 
@@ -22,6 +22,8 @@ $(function() {
     _init();
     setInterval(_animateIt, 15000);
     _event();
+
+    Tool.dropdown();
 });
 
 function _init() {

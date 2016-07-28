@@ -2,6 +2,8 @@
  * Created by shen on 2016/7/25.
  */
 
+"use strict";
+
 require("semantic/semantic.min.css");
 require("../../css/common/common.less");
 require("../../css/page/login.less");
@@ -30,6 +32,15 @@ function constraint() {
                     }
                 ]
             },
+            username: {
+                identifier: 'username',
+                rules: [
+                    {
+                        type: 'empty',
+                        prompt: '请输入用户名'
+                    }
+                ]
+            },
             password: {
                 identifier: 'password',
                 rules: [
@@ -43,24 +54,22 @@ function constraint() {
 
         onSuccess: function (e) {
             e.preventDefault();
-            var form = $(".bt-login-form");
-            var user = form.find("[name='email']").val();
+            var form = $(".vh-login-form");
+            var user = form.find("[name='username']").val();
             var pass = form.find("[name='password']").val();
             $.ajax({
                 url: Constant.url.login,
-                type: "post",
-                data: JSON.stringify({
-                    "user_email": user,
+                type: "POST",
+                data: {
+                    "username": user,
                     "password": pass
-                }),
-                contentType: "application/json",
+                },
+                //crossDomain: true,
+                //contentType: "application/json",
                 success: function (data, textStatus, jqXHR) {
                     //console.log(data, textStatus, jqXHR);
-                    if (data.st === -1) { // 登录错误
-                        $(".ui.error.message").html(data.msg).show();
-                    } else { // 成功
-                        var next = Tool.urlParam("next") || "/";
-                        location.href = decodeURIComponent(next);
+                    if ("NO" === data) { // 登录错误
+                        $(".ui.error.message").html("用户名或密码错误").show();
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {

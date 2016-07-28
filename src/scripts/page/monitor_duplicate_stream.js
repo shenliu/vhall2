@@ -2,6 +2,8 @@
  * Created by shen on 2016/7/18.
  */
 
+"use strict";
+
 require("semantic/semantic.min.css");
 require("../../css/lib/jquery.dataTables.min.css");
 require("../../css/common/common.less");
@@ -13,6 +15,7 @@ import {Tool} from './tool';
 
 $(function () {
     monitor_log_search_table();
+    Tool.dropdown();
 });
 
 /**

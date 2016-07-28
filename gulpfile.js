@@ -26,11 +26,15 @@ gulp.task('todo', function() {
     gulp.src(['./src/images/**/*', '!./src/images/*.ico']).pipe(gulp.dest(path + 'images/'));
 });
 
+gulp.task('copy', function() {
+    gulp.src('./dist/**/*').pipe(gulp.dest('../kgb2.0/actor/static/'));
+});
+
 //---------------------------------------------------------------//
 
 gulp.task("default", sequence(["clean"], ["build-dev"], ["todo"], "webpack-dev-server"));
 
-gulp.task('dist', sequence(["clean"], ["webpack:build"], ["todo"]));
+gulp.task('dist', sequence(["clean"], ["webpack:build"], ["todo"], "copy"));
 
 //---------------------------------------------------------------//
 

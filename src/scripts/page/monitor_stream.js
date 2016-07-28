@@ -17,47 +17,17 @@ import {Tool} from './tool';
 
 // init
 $(function() {
+    _table_order();
     monitor_table();
     monitor_table_event();
+    Tool.dropdown();
 });
+
+let templateCollect = _.template($("#tpl_td_collect").html());
+let template = _.template($("#tpl_td_list").html());
 
 function monitor_table() {
     var reloadInterval, countDownInterval;
-
-    var templateCollect = _.template($("#tpl_td_collect").html());
-    var template = _.template($("#tpl_td_list").html());
-
-    // 自定义sort
-    $.fn.dataTable.ext.order['dom-error-number'] = function( settings, col ) {
-        return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
-            var dom = $(td).find('.vh-td-error-number');
-            if (dom.length > 0) {
-                return dom[0].innerHTML * 1;
-            } else {
-                return 0;
-            }
-        } );
-    };
-
-    $.fn.dataTable.ext.order['dom-user-number'] = function( settings, col ) {
-        return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
-            return $(td).find("a")[0].innerHTML * 1;
-        } );
-    };
-
-    $.fn.dataTable.ext.order['dom-collect-number'] = function( settings, col ) {
-        return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
-            var a = $(td).find("a");
-            if (a.length) {
-                a = a[0].innerHTML;
-                var offset = a.lastIndexOf("/");
-                var n = a.slice(offset + 1);
-                return n * 1;
-            } else {
-                return 0;
-            }
-        } );
-    };
 
     var $table = $("table.ui.table");
     var table = $table.DataTable({
@@ -68,7 +38,15 @@ function monitor_table() {
         ,"lengthMenu": [[25, 50, 75, 100, -1], [25, 50, 75, 100, '全部']]
         ,"ajax": {
             "url": Constant.url.monitor_stream,
-            "dataSrc": ""
+            "dataSrc": function (json) {
+                var data = [];
+                $.each(json, function (k, v) {
+                    var o = v;
+                    o["streamid"] = k;
+                    data.push(o);
+                });
+                return data;
+            }
         }
         ,"order": [[ 14, "desc" ]]
         ,"columns": [{
@@ -82,14 +60,14 @@ function monitor_table() {
             }
         }, {
             // 流信息 idx: 1  todo
-            data: "baduser.user"
+            data: "user.alluser"
 
         }, {
             // 第三方 idx: 2
-            data: "20.log_list",
+            data: "20",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["20"], row["streamid"], "20", template);
+                    return _genList(row["20"], row["streamid"], "20");
                 } else
                     return "-";
             }
@@ -97,10 +75,10 @@ function monitor_table() {
             // 直播助手 idx: 3
             orderDataType: "dom-error-number",
             type: "numeric",
-            data: "1.log_list",
+            data: "1",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["1"], row["streamid"], "1", template);
+                    return _genList(row["1"], row["streamid"], "1");
                 } else
                     return "-";
             }
@@ -108,10 +86,10 @@ function monitor_table() {
             // 移动发起 idx: 4
             orderDataType: "dom-error-number",
             type: "numeric",
-            data: "5.log_list",
+            data: "5",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["5"], row["streamid"], "5", template);
+                    return _genList(row["5"], row["streamid"], "5");
                 } else
                     return "-";
             }
@@ -119,10 +97,10 @@ function monitor_table() {
             // SRS接收 idx: 5
             orderDataType: "dom-error-number",
             type: "numeric",
-            data: "2.log_list",
+            data: "2",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["2"], row["streamid"], "2", template);
+                    return _genList(row["2"], row["streamid"], "2");
                 } else
                     return "-";
             }
@@ -130,10 +108,10 @@ function monitor_table() {
             // SRS分发 idx: 6
             orderDataType: "dom-error-number",
             type: "numeric",
-            data: "11.log_list",
+            data: "11",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["11"], row["streamid"], "11", template);
+                    return _genList(row["11"], row["streamid"], "11");
                 } else
                     return "-";
             }
@@ -141,10 +119,10 @@ function monitor_table() {
             // 多码流转码 idx: 7
             orderDataType: "dom-error-number",
             type: "numeric",
-            data: "16.log_list",
+            data: "16",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["16"], row["streamid"], "16", template);
+                    return _genList(row["16"], row["streamid"], "16");
                 } else
                     return "-";
             }
@@ -152,10 +130,10 @@ function monitor_table() {
             // HLS切片 idx: 8
             orderDataType: "dom-error-number",
             type: "numeric",
-            data: "12.log_list",
+            data: "12",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["12"], row["streamid"], "12", template);
+                    return _genList(row["12"], row["streamid"], "12");
                 } else
                     return "-";
             }
@@ -163,10 +141,10 @@ function monitor_table() {
             // HLS同步 idx: 9
             orderDataType: "dom-error-number",
             type: "numeric",
-            data: "13.log_list",
+            data: "13",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["13"], row["streamid"], "13", template);
+                    return _genList(row["13"], row["streamid"], "13");
                 } else
                     return "-";
             }
@@ -174,10 +152,10 @@ function monitor_table() {
             // HLS回放 idx: 10
             orderDataType: "dom-error-number",
             type: "numeric",
-            data: "14.log_list",
+            data: "14",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genList(row["14"], row["streamid"], "14", template);
+                    return _genList(row["14"], row["streamid"], "14");
                 } else
                     return "-";
             }
@@ -185,10 +163,10 @@ function monitor_table() {
             // 移动 idx: 11
             orderDataType: "dom-collect-number",
             type: "numeric",
-            data: "baduser.mobile_cdn",
+            data: "user.cdn.6",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genCollect(row, "mobile_cdn", "6", templateCollect);
+                    return _genCollect(row, "mobile_cdn", "6");
                 } else
                     return "-";
             }
@@ -196,10 +174,10 @@ function monitor_table() {
             // Flash idx: 12
             orderDataType: "dom-collect-number",
             type: "numeric",
-            data: "baduser.flash_cdn",
+            data: "user.cdn.7",
             render: function (data, type, row, meta) {
                 if (data) {
-                    return _genCollect(row, "flash_cdn", "7", templateCollect);
+                    return _genCollect(row, "flash_cdn", "7");
                 } else
                     return "-";
             }
@@ -207,7 +185,7 @@ function monitor_table() {
             // 卡顿用户数 idx: 13
             orderDataType: "dom-user-number",
             type: "numeric",
-            data: "baduser.user",
+            data: "user.baduser",
             render: function(data, type, row, meta) {
                 var dom = ["<a class='vh-summery-count-each vh-block' data-id='", row["streamid"], "' href='###'>", data, "</a>"];
                 return dom.join("");
@@ -216,7 +194,7 @@ function monitor_table() {
             // 用户总数 idx: 14
             orderDataType: "dom-user-number",
             type: "numeric",
-            data: "alluser.user",
+            data: "user.alluser",
             render: function(data, type, row, meta) {
                 var dom = ["<a class='vh-summery-count-each vh-block' data-id='", row["streamid"], "' href='###'>", data, "</a>"];
                 return dom.join("");
@@ -238,7 +216,7 @@ function monitor_table() {
             _filter(table, false);
         });
 
-        $('.ui.dropdown').dropdown();
+        //$('.ui.dropdown').dropdown();
 
         // 倒计时
         var countdown = toolbar.find(".vh-auto-reload-countdown");
@@ -306,333 +284,6 @@ function monitor_table() {
         });
 
     });
-}
-
-/**
- *  toolbar筛选条件
- *  @param {object} table 控件
- *  @param {boolean} isMultiple 是否多重查询
-  * @private
- */
-function _filter(table, isMultiple) {
-    var search = $.fn.dataTable.ext.search;
-
-    // 多重查询
-    !isMultiple &&　_default();
-
-    var filters = _getFilter();
-    if (filters) {
-        $(filters).each(function(idx, item) {
-            var col = parseInt(item.col, 10),
-                dimension = item.dimension,
-                oper = parseInt(item.oper, 10),
-                val = item.val;
-            var func;
-
-            switch(col) {
-                case 0: // 流ID
-                    if (dimension === "length") { // 长度
-                        switch(oper) {
-                            case 1: // <=
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    return searchData[col].length <= parseInt(val, 10);
-                                };
-                                break;
-                            case 2: // ==
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    return searchData[col].length == parseInt(val, 10);
-                                };
-                                break;
-                            case 3: // >=
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    return searchData[col].length >= parseInt(val, 10);
-                                };
-                                break;
-                            default:
-                                _default();
-                        }
-                    } else if (dimension === "number") { // 大小
-                        _default();
-                    } else if (dimension === "text") { // 文本
-                        switch(oper) {
-                            case 4: // 包含
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    return searchData[col].indexOf(val) !== -1;
-                                };
-                                break;
-                            case 5: // 不包含
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    return searchData[col].indexOf(val) === -1;
-                                };
-                                break;
-                            case 1: case 2: case 3: default:
-                                _default();
-                        }
-                    }
-                    break;
-
-                case 4: // 移动发起
-                case 5: // SRS接收
-                case 6: // SRS分发
-                case 7: // 多码流转码
-                case 8: // HLS切片
-                case 9: // HLS同步
-                case 10: // HLS回放
-                    if (dimension === "number") {
-                        switch(oper) {
-                            case 1: // <=
-                            case 2: // ==
-                            case 3: // >=
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    var s = searchData[col];
-                                    var reg = /<span class="vh-td-error-number">(\d+)<\/span>/;
-                                    var match = reg.exec(s);
-                                    if (match) {
-                                        return _compare(parseInt(match[1], 10), parseInt(val, 10), oper);
-                                    }
-                                    return false;
-                                };
-                                break;
-                            default:
-                                _default();
-                        }
-                    } else if (dimension === "text") {
-                        switch(oper) {
-                            case 4: // 包含
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    var s = searchData[col];
-                                    return s.indexOf(val) !== -1;
-                                };
-                                break;
-                            case 5: // 不包含
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    var s = searchData[col];
-                                    return s.indexOf(val) === -1;
-                                };
-                                break;
-                            default:
-                                _default();
-                        }
-                    } else {
-                        _default();
-                    }
-                    break;
-
-                case 13: // 卡顿用户数
-                case 14: // 用户总数
-                    if (dimension === "number") {
-                        switch(oper) {
-                            case 1: // <=
-                            case 2: // ==
-                            case 3: // >=
-                                func = function( settings, searchData, index, rowData, counter ) {
-                                    var s = searchData[col];
-                                    var v = Tool.stripHTML(s);
-                                    return _compare(parseInt(v, 10), parseInt(val, 10), oper);
-                                };
-                                break;
-                            default:
-                                _default();
-                                break;
-                        }
-                    } else {
-                        _default();
-                    }
-                    break;
-
-                default:
-                    _default();
-            }
-
-            func && search.push(func);
-        });
-    } else {
-        _default();
-    }
-
-    table.draw();
-
-    function _default() {
-        search.length = 0;
-    }
-
-    function _compare(n1, n2, oper) {
-        switch(oper) {
-            case 1:
-                return n1 <= n2;
-                break;
-            case 2:
-                return n1 == n2;
-                break;
-            case 3:
-                return n1 >= n2;
-                break;
-        }
-    }
-}
-
-/**
- *  解析toolbar中的筛选条件
- * @returns {*[]} 无筛选条件  {array} 一个或多个条件
- * @private
- */
-function _getFilter() {
-    var toolbar = $(".vh-table-toolbar").eq(0);
-    // 列 vh-tb-col
-    var col = toolbar.find(".ui.dropdown.vh-tb-col").dropdown("get value");
-    if (col && col.length === 0) {
-        return null;
-    }
-
-    // 维度 vh-tb-dimension
-    var dimension = toolbar.find(".ui.dropdown.vh-tb-dimension").dropdown("get value");
-    if (dimension && dimension.length === 0) {
-        return null;
-    }
-
-    // 操作 vh-tb-oper
-    var oper = toolbar.find(".ui.dropdown.vh-tb-oper").dropdown("get value");
-    if (oper && oper.length === 0) {
-        return null;
-    }
-
-    // 值 vh-tb-val
-    var val = toolbar.find(".ui.input.vh-tb-val input").val().trim();
-    if (val == "") {
-        return null;
-    }
-
-    return [{
-        col: col,
-        dimension: dimension,
-        oper: oper,
-        val: val
-    }];
-}
-
-/**
- *  设置toolbar中的筛选条件
- * @param col
- * @param dimension
- * @param oper
- * @param val
- * @private
- */
-function _setFilter(col, dimension, oper, val) {
-    var toolbar = $(".vh-table-toolbar").eq(0);
-    // 列 vh-tb-col
-    toolbar.find(".ui.dropdown.vh-tb-col").dropdown("set selected", col);
-
-    // 维度 vh-tb-dimension
-    toolbar.find(".ui.dropdown.vh-tb-dimension").dropdown("set selected", dimension);
-
-    // 操作 vh-tb-oper
-    toolbar.find(".ui.dropdown.vh-tb-oper").dropdown("set selected", oper);
-
-    // 值 vh-tb-val
-    toolbar.find(".ui.input.vh-tb-val input").val(val);
-}
-
-function _resetFilter() {
-    var toolbar = $(".vh-table-toolbar").eq(0);
-    // 列 vh-tb-col
-    toolbar.find(".ui.dropdown.vh-tb-col").dropdown("restore defaults");
-
-    // 维度 vh-tb-dimension
-    toolbar.find(".ui.dropdown.vh-tb-dimension").dropdown("restore defaults");
-
-    // 操作 vh-tb-oper
-    toolbar.find(".ui.dropdown.vh-tb-oper").dropdown("restore defaults");
-
-    // 值 vh-tb-val
-    toolbar.find(".ui.input.vh-tb-val input").val("");
-}
-
-/**
- * 生成模版(id="tpl_td_list")
- * @param data  {Array}    每一个单元格td的数据 如: 直播助手
- * @param streamID {String}  作为key的streamID
- * @param k  {String}       模块编号
- * @param tpl  {function}   模版方法
- * @returns {string}  返回生成的模版
- * @private
- */
-function _genList(data, streamID, k, tpl) {
-    if (data["log_list"].length > 0) {
-        var arr = [];
-
-        $.each(data["log_list"], function(idx, item) {
-            var o = {};
-            data["log_list"][idx]["code"] = o["code"] = item.code; // 记录code
-            data["log_list"][idx]["desc"] = o["desc"] = Tool.getMessage(item.code); // 记录描述文字
-            data["log_list"][idx]["date"] = o["date"] = new Date(item.timestamp.$date).toISOString().replace("T", " "); // 记录格式化时间
-            data["log_list"][idx]["level"] = o["level"] = item.type; // 记录level
-            data["log_list"][idx]["bg"] = o["bg"] = Constant.level[item.type]; // 记录bg
-            arr.push(o);
-        });
-
-        return tpl({
-            row1: arr[0],
-            row2: arr[1],
-            row3: arr[2],
-            errorNum: data["error_no"],
-            id: streamID,
-            k: k
-        });
-    } else {
-        return "-";
-    }
-}
-
-/**
- *
- * @param data  一行数据
- * @param type  类型
- * @param k     模块编号
- * @param tpl   模版方法
- * @private
- */
-function _genCollect(data, type, k, tpl) {
-    if (data["alluser"]["user"] > 0) {
-        var streamID = data["streamid"];
-        var bad = data["baduser"][type];
-        var all = data["alluser"][type];
-        var arr = [];
-        var sum = 0, total = 0;
-        $.each(all, function(k, v) {
-            var o = {};
-            o[k] = (bad[k] || 0) + "/" + v;
-            arr.push(o);
-            sum += (bad[k] || 0);
-            total += v;
-        });
-
-        if (total === 0) { // 没有错误的情况
-            $.each(all, function(k, v) {
-                total += v;
-                var o = {};
-                o[k] = 0 + "/" + v;
-                arr.push(o);
-            });
-        }
-
-        if (total === 0) { // 还为0
-            return "-";
-        }
-
-        return tpl({
-            sum: sum,
-            total: total,
-            items: arr.slice(0, 3),
-            itemsRest: arr.length > 3 ? arr.slice(3) : [],
-            id: streamID,
-            k: k,
-            type: type
-            ,more: arr.length > 3
-        });
-    } else {
-        return "-";
-    }
 }
 
 function monitor_table_event() {
@@ -708,7 +359,7 @@ function monitor_table_event_list_details() {
                                 //}
 
                                 data[idx]["desc"] = Tool.getMessage(obj.code); // 记录描述文字
-                                data[idx]["date"] = new Date(obj.timestamp.$date).toISOString().replace("T", " "); // 记录格式化时间
+                                data[idx]["date"] = Tool.dateFormat(new Date(Date(obj.timestamp)), "yyyy-MM-dd hh:mm:ss:S"); // 记录格式化时间
                                 data[idx]["level"] = obj.type; // 记录level
                                 data[idx]["bg"] = Constant.level[obj.type]; // 记录bg
                             });
@@ -1004,14 +655,6 @@ function monitor_table_event_show_stream() {
     });
 }
 
-function _formula(total, bad) {
-    if (total === bad) {
-        return 0;
-    }
-    var n = ((total - bad) / total * 100).toFixed(2);
-    return n < 0 ? 0 : n;
-}
-
 function monitor_table_graph(dom, axis, all, host, stream) {
     var myChart = E.init(dom);
 
@@ -1159,4 +802,372 @@ function monitor_summery_count_graph_quality(dom, axis, legend, series) {
     };
 
     myChart.setOption(option);
+}
+
+// -------------------------------------------------------------------------------//
+
+/**
+ * 生成模版(id="tpl_td_list")
+ * @param data  {Array}    每一个单元格td的数据 如: 直播助手
+ * @param streamID {String}  作为key的streamID
+ * @param k  {String}       模块编号
+ * @returns {string}  返回生成的模版
+ * @private
+ */
+function _genList(data, streamID, k) {
+    var now = {}, history = {};
+    var oNow = data["now"],
+        oHistory = data["history_error"];
+
+    now["code"] = oNow.code; // 记录code
+    now["desc"] = Tool.getMessage(oNow.code); // 记录描述文字
+    now["date"] = Tool.dateFormat(new Date(Date(oNow.timestamp)), "yyyy-MM-dd hh:mm:ss:S"); // 记录格式化时间
+    now["level"] = oNow.type; // 记录level
+    now["bg"] = Constant.level[oNow.type]; // 记录bg
+
+    if (oHistory) {
+        history["code"] = oHistory.code; // 记录code
+        history["desc"] = Tool.getMessage(oHistory.code); // 记录描述文字
+        history["date"] = Tool.dateFormat(new Date(Date(oHistory.timestamp)), "yyyy-MM-dd hh:mm:ss:S"); // 记录格式化时间
+        history["level"] = oHistory.type; // 记录level
+        history["bg"] = Constant.level[oHistory.type]; // 记录bg
+    } else {
+        history = null;
+    }
+
+    var error_no = data["error_no"];
+    var num = _.reduce(error_no, function(result, value, key) {
+        return parseInt(result, 10) + parseInt(value, 10);
+    }, 0);
+
+    return template({
+        row1: now,
+        row2: history,
+        errorNum: num || 0,
+        id: streamID,
+        k: k
+    });
+
+}
+
+/**
+ *
+ * @param data  一行数据
+ * @param type  类型
+ * @param k     模块编号
+ * @private
+ */
+function _genCollect(data, type, k) {
+    if (data["user"]["alluser"] > 0) {
+        var streamID = data["streamid"];
+        var all = data["user"]["cdn"][k];
+        var arr = [];
+        var sum = 0, total = 0;
+        $.each(all, function(k, v) { // k: cdn地址  v: {2: xxx, 4: xxx}
+            var o = {};
+            o[k] = v["4"] + "/" + (v["2"] + v["4"]);
+            arr.push(o);
+            sum += v["4"];
+            total += v["2"] + v["4"];
+        });
+
+        if (total === 0) { // 还为0
+            return "-";
+        }
+
+        return templateCollect({
+            sum: sum,
+            total: total,
+            items: arr.slice(0, 3),
+            itemsRest: arr.length > 3 ? arr.slice(3) : [],
+            id: streamID,
+            k: k,
+            type: type
+            ,more: arr.length > 3
+        });
+    } else {
+        return "-";
+    }
+}
+
+function _table_order() {
+    // 自定义sort
+    $.fn.dataTable.ext.order['dom-error-number'] = function( settings, col ) {
+        return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+            var dom = $(td).find('.vh-td-error-number');
+            if (dom.length > 0) {
+                return dom[0].innerHTML * 1;
+            } else {
+                return 0;
+            }
+        } );
+    };
+
+    $.fn.dataTable.ext.order['dom-user-number'] = function( settings, col ) {
+        return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+            return $(td).find("a")[0].innerHTML * 1;
+        } );
+    };
+
+    $.fn.dataTable.ext.order['dom-collect-number'] = function( settings, col ) {
+        return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+            var a = $(td).find("a");
+            if (a.length) {
+                a = a[0].innerHTML;
+                var offset = a.lastIndexOf("/");
+                var n = a.slice(offset + 1);
+                return n * 1;
+            } else {
+                return 0;
+            }
+        } );
+    };
+}
+
+/**
+ * toolbar筛选条件
+ * @param {object} table 控件
+ * @param {boolean} isMultiple 是否多重查询
+ * @private
+ */
+function _filter(table, isMultiple) {
+    var search = $.fn.dataTable.ext.search;
+
+    // 多重查询
+    !isMultiple &&　_default();
+
+    var filters = _getFilter();
+    if (filters) {
+        $(filters).each(function(idx, item) {
+            var col = parseInt(item.col, 10),
+                dimension = item.dimension,
+                oper = parseInt(item.oper, 10),
+                val = item.val;
+            var func;
+
+            switch(col) {
+                case 0: // 流ID
+                    if (dimension === "length") { // 长度
+                        switch(oper) {
+                            case 1: // <=
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    return searchData[col].length <= parseInt(val, 10);
+                                };
+                                break;
+                            case 2: // ==
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    return searchData[col].length == parseInt(val, 10);
+                                };
+                                break;
+                            case 3: // >=
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    return searchData[col].length >= parseInt(val, 10);
+                                };
+                                break;
+                            default:
+                                _default();
+                        }
+                    } else if (dimension === "number") { // 大小
+                        _default();
+                    } else if (dimension === "text") { // 文本
+                        switch(oper) {
+                            case 4: // 包含
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    return searchData[col].indexOf(val) !== -1;
+                                };
+                                break;
+                            case 5: // 不包含
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    return searchData[col].indexOf(val) === -1;
+                                };
+                                break;
+                            case 1: case 2: case 3: default:
+                            _default();
+                        }
+                    }
+                    break;
+
+                case 4: // 移动发起
+                case 5: // SRS接收
+                case 6: // SRS分发
+                case 7: // 多码流转码
+                case 8: // HLS切片
+                case 9: // HLS同步
+                case 10: // HLS回放
+                    if (dimension === "number") {
+                        switch(oper) {
+                            case 1: // <=
+                            case 2: // ==
+                            case 3: // >=
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    var s = searchData[col];
+                                    var reg = /<span class="vh-td-error-number">(\d+)<\/span>/;
+                                    var match = reg.exec(s);
+                                    if (match) {
+                                        return _compare(parseInt(match[1], 10), parseInt(val, 10), oper);
+                                    }
+                                    return false;
+                                };
+                                break;
+                            default:
+                                _default();
+                        }
+                    } else if (dimension === "text") {
+                        switch(oper) {
+                            case 4: // 包含
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    var s = searchData[col];
+                                    return s.indexOf(val) !== -1;
+                                };
+                                break;
+                            case 5: // 不包含
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    var s = searchData[col];
+                                    return s.indexOf(val) === -1;
+                                };
+                                break;
+                            default:
+                                _default();
+                        }
+                    } else {
+                        _default();
+                    }
+                    break;
+
+                case 13: // 卡顿用户数
+                case 14: // 用户总数
+                    if (dimension === "number") {
+                        switch(oper) {
+                            case 1: // <=
+                            case 2: // ==
+                            case 3: // >=
+                                func = function( settings, searchData, index, rowData, counter ) {
+                                    var s = searchData[col];
+                                    var v = Tool.stripHTML(s);
+                                    return _compare(parseInt(v, 10), parseInt(val, 10), oper);
+                                };
+                                break;
+                            default:
+                                _default();
+                                break;
+                        }
+                    } else {
+                        _default();
+                    }
+                    break;
+
+                default:
+                    _default();
+            }
+
+            func && search.push(func);
+        });
+    } else {
+        _default();
+    }
+
+    table.draw();
+
+    function _default() {
+        search.length = 0;
+    }
+
+    function _compare(n1, n2, oper) {
+        switch(oper) {
+            case 1:
+                return n1 <= n2;
+                break;
+            case 2:
+                return n1 == n2;
+                break;
+            case 3:
+                return n1 >= n2;
+                break;
+        }
+    }
+}
+
+/**
+ * 解析toolbar中的筛选条件
+ * @returns {*[]} 无筛选条件  {array} 一个或多个条件
+ * @private
+ */
+function _getFilter() {
+    var toolbar = $(".vh-table-toolbar").eq(0);
+    // 列 vh-tb-col
+    var col = toolbar.find(".ui.dropdown.vh-tb-col").dropdown("get value");
+    if (col && col.length === 0) {
+        return null;
+    }
+
+    // 维度 vh-tb-dimension
+    var dimension = toolbar.find(".ui.dropdown.vh-tb-dimension").dropdown("get value");
+    if (dimension && dimension.length === 0) {
+        return null;
+    }
+
+    // 操作 vh-tb-oper
+    var oper = toolbar.find(".ui.dropdown.vh-tb-oper").dropdown("get value");
+    if (oper && oper.length === 0) {
+        return null;
+    }
+
+    // 值 vh-tb-val
+    var val = toolbar.find(".ui.input.vh-tb-val input").val().trim();
+    if (val == "") {
+        return null;
+    }
+
+    return [{
+        col: col,
+        dimension: dimension,
+        oper: oper,
+        val: val
+    }];
+}
+
+/**
+ * 设置toolbar中的筛选条件
+ * @param col
+ * @param dimension
+ * @param oper
+ * @param val
+ * @private
+ */
+function _setFilter(col, dimension, oper, val) {
+    var toolbar = $(".vh-table-toolbar").eq(0);
+    // 列 vh-tb-col
+    toolbar.find(".ui.dropdown.vh-tb-col").dropdown("set selected", col);
+
+    // 维度 vh-tb-dimension
+    toolbar.find(".ui.dropdown.vh-tb-dimension").dropdown("set selected", dimension);
+
+    // 操作 vh-tb-oper
+    toolbar.find(".ui.dropdown.vh-tb-oper").dropdown("set selected", oper);
+
+    // 值 vh-tb-val
+    toolbar.find(".ui.input.vh-tb-val input").val(val);
+}
+
+function _resetFilter() {
+    var toolbar = $(".vh-table-toolbar").eq(0);
+    // 列 vh-tb-col
+    toolbar.find(".ui.dropdown.vh-tb-col").dropdown("restore defaults");
+
+    // 维度 vh-tb-dimension
+    toolbar.find(".ui.dropdown.vh-tb-dimension").dropdown("restore defaults");
+
+    // 操作 vh-tb-oper
+    toolbar.find(".ui.dropdown.vh-tb-oper").dropdown("restore defaults");
+
+    // 值 vh-tb-val
+    toolbar.find(".ui.input.vh-tb-val input").val("");
+}
+
+function _formula(total, bad) {
+    if (total === bad) {
+        return 0;
+    }
+    var n = ((total - bad) / total * 100).toFixed(2);
+    return n < 0 ? 0 : n;
 }

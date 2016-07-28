@@ -1,8 +1,10 @@
+"use strict";
+
 require("semantic/semantic.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 
-var _ = require('lodash');
+import * as _ from 'lodash';
 
 var E = require("echarts/dist/echarts.min");
 
@@ -19,6 +21,7 @@ var curCode; // 当前点击饼图后的错误代码code
 $(function () {
     monitor_error_overview();
     monitor_error_oneday();
+    Tool.dropdown();
 });
 
 /**

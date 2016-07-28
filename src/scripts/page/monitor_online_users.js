@@ -34,6 +34,7 @@ $(function () {
         EACH_LINE = col;
     }
     monitor_online_users();
+    Tool.dropdown();
 });
 
 /**

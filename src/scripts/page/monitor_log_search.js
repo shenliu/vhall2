@@ -17,6 +17,7 @@ import {Tool} from './tool';
 $(function () {
     _init(monitor_auto_search);
     monitor_log_search_event();
+    Tool.dropdown();
 });
 
 function _init(callback) {

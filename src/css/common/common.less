@@ -46,6 +46,10 @@ html, body {
   position: relative;
 }
 
+.vh-absolute {
+  position: absolute;
+}
+
 .vh-pointer {
   cursor: pointer;
 }
@@ -100,6 +104,7 @@ html, body {
     height: 100%;
     line-height: 30px;
     background: @color-bg;
+    position: relative;
     a {
       color: @color-light-font!important;
       display: inline-block;
@@ -113,9 +118,34 @@ html, body {
       color: @color-primary!important;
       font-weight: bold;
     }
+
+    .vh-user-bar {
+      position: absolute;
+      right: 15px;
+      color: @color-light-font!important;
+    }
+
+    .vh-logout-bar {
+      .vh-logout {
+        display: inline-block;
+        color: @color-font!important;
+        letter-spacing: .6rem;
+      }
+
+      &:hover .vh-logout {
+        color: @color-primary!important;
+        font-weight: bold;
+      }
+    }
+
+    .vh-user-menu {
+      position: absolute!important;
+      right: -10px!important;
+      left: -50px!important;
+    }
+
   }
 }
-
 
 /*** end header ***/
 

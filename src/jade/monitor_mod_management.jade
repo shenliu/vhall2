@@ -1,0 +1,38 @@
+//-
+   Created by shen on 2016/7/27.
+
+extends _main
+
+block title
+    title 模块信息管理
+
+block content
+    div.ui.main.container.raised.segment#container.vh-container
+        h2(class="ui header vh-table")
+            i(class="cube icon")
+            div(class="content") 模块信息管理
+
+        div(style="overflow:hidden;")
+            a(href="javascript:void();")
+                button.ui.button.primary.icon.labeled(style="float:right;")
+                    i.icon.plus
+                    | 添加模块
+        div#vh-table-list-bar
+
+    script(type="text/template" id="tpl-table-list").
+        <div class="ui relaxed divided list">
+            <div class="item">
+                <div class="content vh-table-list-caption">
+                    <div class="vh-mod-name"><%- modName %></div>
+                    <div class="vh-mod-code"><span>编号:</span><%- modCode %></div>
+                    <div class="vh-float-right">
+                        <button class="circular ui icon button tiny" title="编辑模块">
+                            <i class="icon write" />
+                        </button>
+                        <button class="circular ui icon button tiny" title="添加消息">
+                            <i class="icon plus" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>

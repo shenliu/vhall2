@@ -8,9 +8,17 @@ div(class="ui attached menu vh-main-header")
         a.item.vh-main-header-monitor-log-search(href="monitor_log_search.html") 日志查询
         a.item.vh-main-header-monitor-duplicate-stream(href="monitor_duplicate_stream.html") 重复推流列表
         a.item.vh-main-header-monitor-gallery(href="monitor_gallery.html") 视频截图
-        //-a.item.vh-main-header-monitor-gallery-yolo(href="monitor_gallery_yolo.html") 视频截图(Yolo)
         a.item.vh-main-header-monitor-online-users(href="monitor_online_users.html") 在线用户
         a.item.vh-main-header-monitor-doc-conversion(href="monitor_doc_conversion.html") 文档转换
+        a.item.vh-main-header-monitor-mod-management(href="monitor_mod_management.html") 模块管理
+        div.right.item.vh-user-bar
+            div.ui.dropdown.icon.floating
+                span.text.vh-username
+                i.dropdown.icon
+                div.menu.scrolling.vh-user-menu
+                    div.item.vh-logout-bar
+                        i.sign.out.icon
+                        a.vh-logout(href="login.html") 退出
 
     script.
         var path = location.pathname;

@@ -211,6 +211,11 @@ function dateFormat(date, fmt) {
     return fmt;
 }
 
+function dropdown() {
+    $(".vh-username").html($.cookie("username"));
+    $(".ui.dropdown").dropdown();
+}
+
 export var Tool = {
     xhr_get: function (url, done, fail) {
         return $.ajax({
@@ -279,5 +284,7 @@ export var Tool = {
         decode: function (value) {
             return utf8to16(base64decode(value));
         }
-    }
+    },
+
+    dropdown: dropdown
 };

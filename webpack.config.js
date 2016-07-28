@@ -17,21 +17,22 @@ const debug = process.env.NODE_ENV !== 'production';
 module.exports = {
     entry: { //配置入口文件,有几个写几个
         login: './src/scripts/page/login',
-        monitor_stream: './src/scripts/page/monitor_stream.js',
-        monitor_gallery: './src/scripts/page/monitor_gallery.js',
-        monitor_error_stat: './src/scripts/page/monitor_error_stat.js',
-        monitor_log_search: './src/scripts/page/monitor_log_search.js',
-        monitor_duplicate_stream: './src/scripts/page/monitor_duplicate_stream.js',
-        monitor_online_users: './src/scripts/page/monitor_online_users.js',
-        monitor_doc_conversion: './src/scripts/page/monitor_doc_conversion.js',
-        vendor_base: ['jquery', 'lodash'],
+        monitor_stream: './src/scripts/page/monitor_stream',
+        monitor_gallery: './src/scripts/page/monitor_gallery',
+        monitor_error_stat: './src/scripts/page/monitor_error_stat',
+        monitor_log_search: './src/scripts/page/monitor_log_search',
+        monitor_duplicate_stream: './src/scripts/page/monitor_duplicate_stream',
+        monitor_online_users: './src/scripts/page/monitor_online_users',
+        monitor_doc_conversion: './src/scripts/page/monitor_doc_conversion',
+        monitor_mod_management: './src/scripts/page/monitor_mod_management',
+        vendor_base: ['jquery', './src/scripts/lib/jquery.cookie', 'lodash'],
         vendor_ui: ['semantic/semantic'],
         vendor_chart: ['echarts/dist/echarts.min'],
         vendor_table: ['./src/scripts/lib/jquery.dataTables.min']
     },
     output: {
         path: path.join(__dirname, debug ? 'dev' : "dist"), //输出目录的配置,模板 样式 脚本 图片等资源的路径配置都相对于它
-        publicPath: debug ? '/dev/' : "/dist/",   //模板 样式 脚本 图片等资源对应的在server上的路径
+        publicPath: debug ? '/dev/' : "/static/",   //模板 样式 脚本 图片等资源对应的在server上的路径
         filename: 'js/[name].js',           //每个页面对应的主js的生成配置
         chunkFilename: 'js/[id].chunk.js?[chunkhash]'   //chunk生成的配置
     },
@@ -162,6 +163,17 @@ module.exports = {
             inject: 'body',
             hash: true,
             chunks: ['vendor_base', 'vendor_ui', 'vendor_table', 'monitor_doc_conversion'],
+            chunksSortMode: 'dependency'
+        }),
+
+        // 模块信息管理
+        new HtmlWebpackPlugin({
+            favicon: './src/images/favicon.ico',
+            filename: './monitor_mod_management.html',
+            template: './src/jade/monitor_mod_management.jade',
+            inject: 'body',
+            hash: true,
+            chunks: ['vendor_base', 'vendor_ui', 'vendor_table', 'monitor_mod_management'],
             chunksSortMode: 'dependency'
         })
     ]

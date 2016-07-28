@@ -1,19 +1,19 @@
 //-
    Created by shen on 2016/7/25.
 
-div(class="ui middle aligned center aligned grid vh-login-box")
-    div(class="column")
-        h2(class="ui vh-color-font header")
-            div(class="content") 登录至您的帐号
-        form(class="ui large form vh-login-form")
-            div(class="ui stacked segment")
-                div(class="field")
-                    div(class="ui left icon input")
-                        i(class="user icon")
-                        input(type="text", name="email", placeholder="电子邮件地址")
-                div(class="field")
-                    div(class="ui left icon input")
-                        i(class="lock icon")
-                        input(type="password", name="password", placeholder="密码")
-                div(class="ui fluid large vh-color-bg submit button") 登录
-            div(class="ui error message")
+div.ui.middle.aligned.center.aligned.grid.vh-login-box
+    div.column
+        h2.ui.vh-color-font.header
+            div.content 登录至您的帐号
+        form.ui.large.form.vh-login-form
+            div.ui.stacked.segment
+                div.field
+                    div.ui.left.icon.input
+                        i.user.icon
+                        input(type="text", name="username", placeholder="用户名", value="liushen")
+                div.field
+                    div.ui.left.icon.input
+                        i.lock.icon
+                        input(type="password", name="password", placeholder="密码", value="123456")
+                div.ui.fluid.large.vh-color-bg.submit.button 登录
+            div.ui.error.message

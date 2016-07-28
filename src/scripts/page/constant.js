@@ -4,7 +4,8 @@
 
 "use strict";
 
-var host = "http://123.57.180.76:4588/";
+let host = "http://123.57.180.76:4588/";
+let host_new = "http://123.56.227.40:4588/";
 
 export var Constant = {
     debug: false,
@@ -303,7 +304,10 @@ export var Constant = {
     },
 
     url: {
-        monitor_stream: host + "stream",
+        login: host_new + "login",
+        //monitor_stream: host + "stream",
+        monitor_stream: host_new + "stream_real_status",
+
         monitor_stream_query_list: host + "stream_mod_query?streamid={id}&mod={k}&length={len}",
         monitor_stream_query_list_history: host + "stream_mod_code_query?streamid={id}&hostname={host}&code={code}",
         monitor_stream_summery_count: host + "stream_user_count_query?streamid={id}",
