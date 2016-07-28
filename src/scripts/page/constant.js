@@ -305,10 +305,15 @@ export var Constant = {
 
     url: {
         login: host_new + "login",
+
+        // table数据
         //monitor_stream: host + "stream",
         monitor_stream: host_new + "stream_real_status",
 
-        monitor_stream_query_list: host + "stream_mod_query?streamid={id}&mod={k}&length={len}",
+        // 点击每个绿红td
+        //monitor_stream_query_list: host + "stream_mod_query?streamid={id}&mod={k}&length={len}",
+        monitor_stream_query_list: host_new + "stream_mod_history_log?streamid={id}&mod={k}",
+
         monitor_stream_query_list_history: host + "stream_mod_code_query?streamid={id}&hostname={host}&code={code}",
         monitor_stream_summery_count: host + "stream_user_count_query?streamid={id}",
 
@@ -335,7 +340,7 @@ export var Constant = {
 
     queryNumber: 100, // 查询错误列表结果个数
 
-    reloadInterval: 15000 // 表格自动刷新间隔时间
+    reloadInterval: 30000 // 表格自动刷新间隔时间
 
     ,modules: {
         "20": "第三方",

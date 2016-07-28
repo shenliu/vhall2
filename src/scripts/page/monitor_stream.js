@@ -25,12 +25,13 @@ $(function() {
 
 let templateCollect = _.template($("#tpl_td_collect").html());
 let template = _.template($("#tpl_td_list").html());
+let table;
 
 function monitor_table() {
     var reloadInterval, countDownInterval;
 
     var $table = $("table.ui.table");
-    var table = $table.DataTable({
+    table = $table.DataTable({
         "dom": 'if<"vh-table-toolbar">tlp',
         "language": Constant.tableLocale
         ,"autoWidth": false
@@ -56,12 +57,19 @@ function monitor_table() {
                 if (data)
                     return data.substring(0, 32);
                 else
-                    return "";
+                    return "-";
             }
         }, {
             // 流信息 idx: 1  todo
-            data: "user.alluser"
-
+            data: "15",
+            render: function(data, type, row, meta) {
+                if (data) {
+                    var url = data["now"]["attr"]["_m"]["url"];
+                    var html = ["<img src='' data-src='", url, "' width='180' height='100' />"];
+                    return html.join("");
+                } else
+                    return "-";
+            }
         }, {
             // 第三方 idx: 2
             data: "20",
@@ -203,20 +211,23 @@ function monitor_table() {
     });
 
     // 表格事件
-    table.on( 'draw', function (e) {
-        monitor_table_event_list_details();
+    table.on('draw', function (e) {
+        //monitor_table_event_list_details();
         monitor_table_event_show_stream();
+        _genImg();
     }).on('init', function() {
         var tpl = _.template($("#tpl_table_toolbar").html());
         var toolbar = $(".vh-table-toolbar").eq(0);
-        toolbar.html(tpl());
+        toolbar.html(tpl({
+            reload: Constant.reloadInterval / 1000
+        }));
 
         // 筛选按钮
         toolbar.find(".ui.button.vh-tb-filter").on("click", function() {
             _filter(table, false);
         });
 
-        //$('.ui.dropdown').dropdown();
+        $('.ui.dropdown').dropdown();
 
         // 倒计时
         var countdown = toolbar.find(".vh-auto-reload-countdown");
@@ -352,7 +363,8 @@ function monitor_table_event_list_details() {
                     if (id) {
                         var url = Constant.url.monitor_stream_query_list.replace("{id}", id).replace("{k}", k).replace("{len}", n);
                         Tool.xhr_get(url, function(data, textStatus, jqXHR) {
-                            $.each(data, function(idx, obj) {
+                            console.log(data);
+                            $.each(data["log_list"], function(idx, obj) {
                                 // parse base64
                                 //if ("_m" in obj["attr"]) {
                                     //obj["attr"]["_m"] = T.base64.decode(obj["attr"]["_m"]);
@@ -460,6 +472,8 @@ function monitor_table_event_show_stream() {
             .modal('setting', 'transition', "fly down")
             .modal('show').modal("refresh");
     });
+
+    return;
 
     // 汇总
     $("table.ui.table td").off("click").on("click", ".vh-summery-count-each", function(e) {
@@ -888,6 +902,33 @@ function _genCollect(data, type, k) {
     } else {
         return "-";
     }
+}
+
+function _genImg() {
+    $("[data-src]").each(function(idx, elem) {
+        var dom = $(elem).parent();
+        var maxH = 100;
+        var img = new Image();
+        img.className = "ui small image";
+        img.src = $(elem).attr("data-src");
+        img.onload = function () {
+            var imgW = img.width;
+            var imgH = img.height;
+            var w = dom.width(), h;
+            h = maxH;
+            w = imgW * h / imgH;
+            $(img).width(w).height(h);
+            dom.height(h);
+            dom.css({
+                textAlign: "-webkit-center"
+            });
+            dom.empty().append(img);
+        };
+        img.onerror = function() {
+            img.src = "images/error.png";
+        };
+        $(elem).removeAttr("data-src");
+    });
 }
 
 function _table_order() {
