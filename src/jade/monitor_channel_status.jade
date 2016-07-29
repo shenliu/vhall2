@@ -66,20 +66,5 @@ block content
                     <div class="ui top right attached label vh-label vh-label-<%= item.bg %>-bg"><%- item.num %></div>
                 </div>
             <% }); %>
-
-            <% if (more) { %>
-            <div class="ui accordion">
-                <div class="title vh-more">more...</div>
-                <div class="content">
-                <% _.each(itemsRest, function(item, idx) { %>
-                    <div class="item <%= item.bg %>-bg">
-                        <div class="header"><%- item.code %> <%- item.desc %></div>
-                        <%- item.date %>
-                        <div class="ui top right attached label vh-label vh-label-<%= item.bg %>-bg"><%- item.num %></div>
-                    </div>
-                <% }); %>
-                </div>
-                </div>
-            <% } %>
             </div>
         </div>

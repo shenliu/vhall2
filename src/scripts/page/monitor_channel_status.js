@@ -25,7 +25,7 @@ $(function () {
     }
 
     $("#vh-streamID").find("i").html(streamID);
-
+console.log(Constant.url.monitor_stream_mod_history.replace("{id}", streamID));
     channel_table();
 });
 
@@ -37,12 +37,12 @@ function channel_table() {
         "language": Constant.tableLocale
         ,"autoWidth": false
         ,"scrollX": true
-        ,"lengthMenu": [[25, 50, 75, 100, -1], [25, 50, 75, 100, '全部']]
+        ,"lengthMenu": [[-1, 25, 50, 75, 100], ['全部', 25, 50, 75, 100]]
         ,"ajax": {
             "url": Constant.url.monitor_stream_mod_history.replace("{id}", streamID),
             "dataSrc": ""
         }
-        ,"order": [[ 0, "desc" ]]
+        ,"order": [[ 0, "asc" ]]
         ,"columns": [{
             // 时间 idx: 0
             data: "timestamp"
@@ -175,12 +175,7 @@ function channel_table() {
 }
 
 function channel_table_event() {
-    // more...
-    $('.ui.accordion').accordion({
-        selector: {
-            trigger: '.title.vh-more'
-        }
-    });
+
 }
 
 
@@ -208,9 +203,7 @@ function _genList(data, k) {
     });
 
     return tpl({
-        items: arr.slice(0, 3),
-        itemsRest: arr.length > 3 ? arr.slice(3) : [],
-        more: arr.length > 3,
+        items: arr,
         id: streamID,
         k: k
     });
