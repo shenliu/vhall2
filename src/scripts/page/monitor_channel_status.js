@@ -10,6 +10,8 @@ require("../../css/page/channel_status.less");
 
 import * as _ from 'lodash';
 
+let E = require("echarts/dist/echarts.min");
+
 import {Constant} from './constant';
 
 import {Tool} from './tool';
@@ -25,8 +27,48 @@ $(function () {
     }
     $("#vh-streamID").find("i").html(streamID);
 
+    channel_error();
     channel_table();
 });
+
+// 错误分时图
+function channel_error() {
+    let times = []; // x轴 时间
+    let datas = {}; // 数据
+
+    let url = Constant.url.monitor_channel_error.replace("{id}", streamID);
+    Tool.xhr_get(url, function (data, textStatus, jqXHR) {
+        $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"1": 12, "2": null, ...}
+            if (!("timestamp" in elem)) {
+                return true;
+            }
+            times.push(elem["timestamp"]);
+            $.each(elem, function (x, y) { // x: "1" y: 12
+                if (x !== "timestamp") {
+                    if (!(x in datas)) {
+                        datas[x] = [];
+                    }
+                    datas[x].push(y);
+                }
+            });
+        });
+        let series = [];
+        $.each(datas, function (k, v) {
+            series.push({
+                name: Tool.getModule(k),
+                type: "bar",
+                stack: '总量',
+                data: v
+            });
+        });
+        let legend = _.map(_.keys(datas), function (i) {
+            return Tool.getModule(i);
+        });
+        let dom = $("#vh-channel-error")[0];
+
+        _graph_bar(dom, times, legend, series);
+    }, null);
+}
 
 function channel_table() {
     tpl = _.template($("#tpl_td_list").html());
@@ -38,7 +80,7 @@ function channel_table() {
         ,"scrollX": true
         ,"lengthMenu": [[-1, 25, 50, 75, 100], ['全部', 25, 50, 75, 100]]
         ,"ajax": {
-            "url": Constant.url.monitor_stream_mod_history.replace("{id}", streamID),
+            "url": Constant.url.monitor_channel_mod_history.replace("{id}", streamID),
             "dataSrc": function (json) {
                 // 清除数据源中无用的 即没有"timestamp"的
                 var data = [];
@@ -197,4 +239,41 @@ function _genList(data, k) {
         id: streamID,
         k: k
     });
+}
+
+
+function _graph_bar(dom, axis, legend, series) {
+    var myChart = E.init(dom);
+
+    var option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: legend,
+            x: "right"
+        },
+        grid: [{
+            left: '20',
+            right: '40',
+            bottom: '50',
+            containLabel: true
+        }],
+        xAxis: [{
+            type: 'category',
+            name: "时间",
+            axisLabel: {
+                rotate: -15
+            },
+            data: axis
+        }],
+        yAxis: [{
+            name: '个数',
+            minInterval: 1,
+            type: 'value'
+        }],
+        series: series
+    };
+
+    myChart.setOption(option);
 }

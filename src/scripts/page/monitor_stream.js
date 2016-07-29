@@ -363,7 +363,7 @@ function monitor_table_event_list_details() {
                     var k = that.attr("data-k");
                     var n = Constant.queryNumber + "";
                     if (id) {
-                        var url = Constant.url.monitor_stream_query_list.replace("{id}", id).replace("{k}", k).replace("{len}", n);
+                        var url = Constant.url.monitor_channel_query_list.replace("{id}", id).replace("{k}", k).replace("{len}", n);
                         Tool.xhr_get(url, function(data, textStatus, jqXHR) {
                             console.log(data);
                             $.each(data["log_list"], function(idx, obj) {

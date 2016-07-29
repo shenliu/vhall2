@@ -307,15 +307,16 @@ export var Constant = {
         login: host + "login",
 
         // stream: table数据
-        //monitor_stream: host_old + "stream",
         monitor_stream: host + "stream_real_status",
 
-        // channel status: 点击每个绿红td
-        //monitor_stream_query_list: host_old + "stream_mod_query?streamid={id}&mod={k}&length={len}",
-        monitor_stream_query_list: host + "stream_mod_history_log?streamid={id}&mod={k}",
-
         // channel status: table
-        monitor_stream_mod_history: host + "stream_mod_history_log?streamid={id}",
+        monitor_channel_mod_history: host + "stream_mod_history_log?streamid={id}",
+
+        // channel status: 错误分时图
+        monitor_channel_error: host + "stream_error_history?streamid={id}",
+
+        // channel status: 点击每个绿红td
+        monitor_channel_query_list: host + "stream_mod_history_log?streamid={id}&mod={k}",
 
         //-------------------------------------------------------------------------------//
 
