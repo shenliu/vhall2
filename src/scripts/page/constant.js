@@ -4,8 +4,8 @@
 
 "use strict";
 
-let host = "http://123.57.180.76:4588/";
-let host_new = "http://123.56.227.40:4588/";
+let host_old = "http://123.57.180.76:4588/";
+let host= "http://123.56.227.40:4588/";
 
 export var Constant = {
     debug: false,
@@ -304,33 +304,38 @@ export var Constant = {
     },
 
     url: {
-        login: host_new + "login",
+        login: host + "login",
 
-        // table数据
-        //monitor_stream: host + "stream",
-        monitor_stream: host_new + "stream_real_status",
+        // stream: table数据
+        //monitor_stream: host_old + "stream",
+        monitor_stream: host + "stream_real_status",
 
-        // 点击每个绿红td
-        //monitor_stream_query_list: host + "stream_mod_query?streamid={id}&mod={k}&length={len}",
-        monitor_stream_query_list: host_new + "stream_mod_history_log?streamid={id}&mod={k}",
+        // channel status: 点击每个绿红td
+        //monitor_stream_query_list: host_old + "stream_mod_query?streamid={id}&mod={k}&length={len}",
+        monitor_stream_query_list: host + "stream_mod_history_log?streamid={id}&mod={k}",
 
-        monitor_stream_query_list_history: host + "stream_mod_code_query?streamid={id}&hostname={host}&code={code}",
-        monitor_stream_summery_count: host + "stream_user_count_query?streamid={id}",
+        // channel status: table
+        monitor_stream_mod_history: host + "stream_mod_history_log?streamid={id}",
 
-        monitor_host: host + "hosts",
+        //-------------------------------------------------------------------------------//
 
-        monitor_error_stat_overview: host + "stream_error_count_query",
-        monitor_error_stat_host: host + "stream_host_error_count_query",
-        monitor_error_stat_oneday: host + "oneday_error_count_query",
+        monitor_stream_query_list_history: host_old + "stream_mod_code_query?streamid={id}&hostname={host_old}&code={code}",
+        monitor_stream_summery_count: host_old + "stream_user_count_query?streamid={id}",
 
-        monitor_log_search: host + "search?streamid={id}&hostname={host}&mod={mod}&code={code}&day={date}&timestart={start}&timeend={end}",
-        monitor_duplicate_stream: host + "stream_badpush",
-        monitor_gallery: host + "stream_photo",
-        monitor_online_users: host + "streaminfo",
-        monitor_doc_conversion: host + "get_doc",
+        monitor_host: host_old + "hosts",
 
-        monitor_get_streams: host + "get_stream",
-        monitor_get_hosts: host + "get_host"
+        monitor_error_stat_overview: host_old + "stream_error_count_query",
+        monitor_error_stat_host: host_old + "stream_host_error_count_query",
+        monitor_error_stat_oneday: host_old + "oneday_error_count_query",
+
+        monitor_log_search: host_old + "search?streamid={id}&hostname={host_old}&mod={mod}&code={code}&day={date}&timestart={start}&timeend={end}",
+        monitor_duplicate_stream: host_old + "stream_badpush",
+        monitor_gallery: host_old + "stream_photo",
+        monitor_online_users: host_old + "streaminfo",
+        monitor_doc_conversion: host_old + "get_doc",
+
+        monitor_get_streams: host_old + "get_stream",
+        monitor_get_hosts: host_old + "get_host"
     },
 
     level: {
