@@ -23,9 +23,8 @@ $(function () {
     if (!streamID) {
         return;
     }
-
     $("#vh-streamID").find("i").html(streamID);
-console.log(Constant.url.monitor_stream_mod_history.replace("{id}", streamID));
+
     channel_table();
 });
 
@@ -40,7 +39,16 @@ function channel_table() {
         ,"lengthMenu": [[-1, 25, 50, 75, 100], ['全部', 25, 50, 75, 100]]
         ,"ajax": {
             "url": Constant.url.monitor_stream_mod_history.replace("{id}", streamID),
-            "dataSrc": ""
+            "dataSrc": function (json) {
+                // 清除数据源中无用的 即没有"timestamp"的
+                var data = [];
+                $(json).each(function(idx, obj) {
+                    if ("timestamp" in obj) {
+                        data.push(obj);
+                    }
+                });
+                return data;
+            }
         }
         ,"order": [[ 0, "asc" ]]
         ,"columns": [{
@@ -128,25 +136,7 @@ function channel_table() {
                     return "-";
             }
         }, {
-            // 移动 idx: 10
-            data: "6",
-            render: function (data, type, row, meta) {
-                if (data) {
-                    return _genList(row["6"], "6");
-                } else
-                    return "-";
-            }
-        }, {
-            // Flash idx: 11
-            data: "7",
-            render: function (data, type, row, meta) {
-                if (data) {
-                    return _genList(row["7"], "7");
-                } else
-                    return "-";
-            }
-        }, {
-            // 截图 idx: 12
+            // 截图 idx: 10
             data: "15",
             render: function (data, type, row, meta) {
                 if (data) {
@@ -155,7 +145,7 @@ function channel_table() {
                     return "-";
             }
         }, {
-            // 文档转换 idx: 13
+            // 文档转换 idx: 11
             data: "23",
             render: function (data, type, row, meta) {
                 if (data) {
