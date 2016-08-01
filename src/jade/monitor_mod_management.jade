@@ -3,6 +3,8 @@
 
 extends _main
 
+include _modal
+
 block title
     title 模块信息管理
 
@@ -12,26 +14,50 @@ block content
             i(class="cube icon")
             div(class="content") 模块信息管理
 
-        div(style="overflow:hidden;")
-            a(href="javascript:void();")
-                button.ui.button.primary.icon.labeled(style="float:right;")
-                    i.icon.plus
-                    | 添加模块
+        div.vh-overflow(style="margin:0 0 5px 0;")
+            button.ui.button.primary.icon.labeled.vh-float-right#vh-add-mod
+                i.icon.plus
+                | 添加模块
+
         div#vh-table-list-bar
 
+    +modal('vh-modal-mod small', '模块', true, false, true, '确定|approve primary', '取消|deny')
+        include _tpl_monitor_add_or_modify_mod
+
     script(type="text/template" id="tpl-table-list").
-        <div class="ui relaxed divided list">
+        <div class="ui relaxed dividing list vh-mod">
             <div class="item">
                 <div class="content vh-table-list-caption">
-                    <div class="vh-mod-name"><%- modName %></div>
-                    <div class="vh-mod-code"><span>编号:</span><%- modCode %></div>
-                    <div class="vh-float-right">
-                        <button class="circular ui icon button tiny" title="编辑模块">
-                            <i class="icon write" />
-                        </button>
-                        <button class="circular ui icon button tiny" title="添加消息">
-                            <i class="icon plus" />
-                        </button>
+                    <div class="ui raised segment" style="width:100%;">
+                        <a class="vh-mod-name ui blue ribbon label vh-mod-name"><%- modName %></a>
+                        <div class="vh-mod-code ui left pointing label">编号:<span><%- modCode %></span></div>
+                        <div class="vh-float-right">
+                            <button class="circular ui icon button tiny vh-mod-edit" title="编辑模块">
+                                <i class="icon write" />
+                            </button>
+                            <button class="circular ui icon button tiny vh-mod-add-message" title="添加消息">
+                                <i class="icon plus" />
+                            </button>
+                            <button class="circular ui icon button tiny vh-mod-delete" title="移除模块">
+                                <i class="icon trash outline" />
+                            </button>
+                        </div>
+                        <table class="ui table striped celled display nowrap compact dataTable" cellspacing='0' width='100%'>
+                            <thead>
+                                <tr>
+                                    <th>信息编号</th>
+                                    <th>类别</th>
+                                    <th>名称</th>
+                                    <th>频道相关</th>
+                                    <th>服务器相关</th>
+                                    <th>汇报频率</th>
+                                    <th>字段</th>
+                                    <th>说明/处理方案</th>
+                                    <th>编辑</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
