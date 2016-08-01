@@ -373,7 +373,7 @@ function monitor_table_event_list_details() {
                                 //}
 
                                 data[idx]["desc"] = Tool.getMessage(obj.code); // 记录描述文字
-                                data[idx]["date"] = Tool.dateFormat(new Date(Date(obj.timestamp)), "yyyy-MM-dd hh:mm:ss.S"); // 记录格式化时间
+                                data[idx]["date"] = Tool.dateFormat(new Date(obj.timestamp * 1000), "yyyy-MM-dd hh:mm:ss.S"); // 记录格式化时间
                                 data[idx]["level"] = obj.type; // 记录level
                                 data[idx]["bg"] = Constant.level[obj.type]; // 记录bg
                             });
@@ -837,14 +837,14 @@ function _genList(data, streamID, k) {
 
     now["code"] = oNow.code; // 记录code
     now["desc"] = Tool.getMessage(oNow.code); // 记录描述文字
-    now["date"] = Tool.dateFormat(new Date(Date(oNow.timestamp)), "yyyy-MM-dd hh:mm:ss.S"); // 记录格式化时间
+    now["date"] = Tool.dateFormat(new Date(oNow.timestamp * 1000), "yyyy-MM-dd hh:mm:ss.S"); // 记录格式化时间
     now["level"] = oNow.type; // 记录level
     now["bg"] = Constant.level[oNow.type]; // 记录bg
 
     if (oHistory) {
         history["code"] = oHistory.code; // 记录code
         history["desc"] = Tool.getMessage(oHistory.code); // 记录描述文字
-        history["date"] = Tool.dateFormat(new Date(Date(oHistory.timestamp)), "yyyy-MM-dd hh:mm:ss.S"); // 记录格式化时间
+        history["date"] = Tool.dateFormat(new Date(oHistory.timestamp * 1000), "yyyy-MM-dd hh:mm:ss.S"); // 记录格式化时间
         history["level"] = oHistory.type; // 记录level
         history["bg"] = Constant.level[oHistory.type]; // 记录bg
     } else {
