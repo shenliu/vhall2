@@ -20,14 +20,119 @@ var curCode; // 当前点击饼图后的错误代码code
 // init
 $(function () {
     monitor_error_overview();
-    monitor_error_oneday();
+    //monitor_error_oneday();
     Tool.dropdown();
 });
+
+function monitor_error_overview() {
+    Tool.xhr_get(Constant.url.monitor_error_stat_overview, function (data, textStatus, jqXHR) {
+        var times = [], // 时间轴
+            mods = [], // 模块 也是legend
+            series = [],
+            dataArr = []; // 存放刻个时间段对应的数据 { "1": { "24303": "44" }, ... }
+        $.each(data, function(k, v) { // k: "2016073119"  v: { "1": { "24303": "44" }, ... }
+            var time = k.replace(/(\d{4})(\d{2})(\d{2})(\d{2})/, "$1/$2/$3 $4:00");
+            times.push(time);
+
+            $.each(v, function(x, y) { // x: "1"   y: {"24303": "44", ...}
+                if (_.indexOf(mods, x) === -1) {
+                    mods.push(x); // 所有可能的模块
+                }
+            });
+
+            dataArr.push(v);
+        });
+
+        var modNumber = {};  // 各个模块按时间的错误数 {"1": [2, 0, 5, ...], ...}
+        $(dataArr).each(function(idx, o) { // o: { "1": { "24303": "44" }, ... }
+            $(mods).each(function (i, item) {
+                if (!(item in modNumber)) {
+                    modNumber[item] = [];
+                }
+                var obj = o[item]; // {"64001": "2", "64002": "178", ...}
+                var num = (obj && _.reduce(obj, function(result, value, key) {
+                        return parseInt(result, 10) + parseInt(value, 10);
+                    }, 0)) || 0;
+                modNumber[item].push(num);
+            });
+        });
+
+        $.each(mods, function (i, o) {
+            series.push({
+                name: Tool.getModule(mods[i]),
+                type: "bar",
+                stack: '总量',
+                data: modNumber[o]
+            });
+        });
+
+        var dom = $(".vh-error-stat-overview")[0];
+        mods = $(mods).map(function() {
+            return Tool.getModule(this);
+        });
+
+        monitor_error_overview_graph(dom, times, mods, series, null);
+
+    }, null);
+}
+
+
+// ---------------------------------------------------------------------------- //
+
+function monitor_error_overview_bak2() {
+    Tool.xhr_get(Constant.url.monitor_error_stat_overview, function (data, textStatus, jqXHR) {
+        var times = [], // 时间轴
+            host = [], // 主机名 也是legend
+            series = [],
+            dataArr = []; // 存放刻个时间段对应的数据 { "live-srscore02.vhouhn.com": { "24303": "44" }, ... }
+        $.each(data, function(k, v) { // k: "2016073119"  v: { "live-srscore02.vhouhn.com": { "24303": "44" }, ... }
+            var time = k.replace(/(\d{4})(\d{2})(\d{2})(\d{2})/, "$1/$2/$3 $4:00");
+            times.push(time);
+
+            $.each(v, function(x, y) { // x: "live-srscore02.vhouhn.com"   y: {"24303": "44", ...}
+                if (_.indexOf(host, x) === -1) {
+                    host.push(x); // 所有可能的主机
+                }
+            });
+
+            dataArr.push(v);
+        });
+
+        var hostNumber = {};  // 各个主机按时间的错误数 {"xxx.vhall.com": [2, 0, 5, ...], ...}
+        $(dataArr).each(function(idx, o) { // o: { "live-srscore02.vhouhn.com": { "24303": "44" }, ... }
+            $(host).each(function (i, item) {
+                if (!(item in hostNumber)) {
+                    hostNumber[item] = [];
+                }
+                var obj = o[item]; // {"64001": "2", "64002": "178", ...}
+                var num = (obj && _.reduce(obj, function(result, value, key) {
+                        return parseInt(result, 10) + parseInt(value, 10);
+                    }, 0)) || 0;
+                hostNumber[item].push(num);
+            });
+        });
+
+        $.each(host, function (i, o) {
+            series.push({
+                name: host[i],
+                type: "bar",
+                stack: '总量',
+                data: hostNumber[o]
+            });
+        });
+
+        var dom = $(".vh-error-stat-overview")[0];
+
+        monitor_error_overview_graph(dom, times, host, series, null);
+
+    }, null);
+}
+
 
 /**
  *  第一个柱状图 总览图 组织数据
  */
-function monitor_error_overview() {
+function monitor_error_overview_bak() {
     var _datas = {};
     Tool.xhr_get(Constant.url.monitor_error_stat_overview, function (data, textStatus, jqXHR) {
         $(data).each(function (idx, elem) {

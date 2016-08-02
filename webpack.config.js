@@ -27,7 +27,7 @@ module.exports = {
         monitor_mod_management: './src/scripts/page/monitor_mod_management',
         monitor_channel_status: './src/scripts/page/monitor_channel_status',
         vendor_base: ['jquery', './src/scripts/lib/jquery.cookie', 'lodash'],
-        vendor_ui: ['semantic/semantic'],
+        vendor_ui: ['semantic/semantic.min'],
         vendor_chart: ['echarts/dist/echarts.min'],
         vendor_table: ['./src/scripts/lib/jquery.dataTables.min']
     },
@@ -69,7 +69,7 @@ module.exports = {
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: ["vendor_ui", "vendor_chart", "vendor_table", "vendor_base"],
-            minChunks: Infinity
+            minChunks: 2
         }),
         new ExtractTextPlugin('css/[name].css'), //单独使用link标签加载css并设置路径,相对于output配置中的publickPath
         new webpack.HotModuleReplacementPlugin(), //热加载

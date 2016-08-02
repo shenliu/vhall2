@@ -2,6 +2,8 @@
  * Created by shen on 2016/7/14.
  */
 
+"use strict";
+
 import {Constant} from './constant';
 
 var base64EncodeChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

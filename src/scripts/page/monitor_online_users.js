@@ -4,6 +4,8 @@
  * 在线用户
  */
 
+"use strict";
+
 require("semantic/semantic.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");

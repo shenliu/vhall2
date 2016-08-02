@@ -2,6 +2,8 @@
  * Created by shen on 2016/7/28.
  */
 
+"use strict";
+
 require("semantic/semantic.min.css");
 require("../../css/lib/jquery.dataTables.min.css");
 require("../../css/common/common.less");
@@ -178,20 +180,20 @@ function channel_table() {
                     return "-";
             }
         }, {
-            // 截图 idx: 10
-            data: "15",
-            render: function (data, type, row, meta) {
-                if (data) {
-                    return _genList(row["15"], "15");
-                } else
-                    return "-";
-            }
-        }, {
-            // 文档转换 idx: 11
+            // 文档转换 idx: 10
             data: "23",
             render: function (data, type, row, meta) {
                 if (data) {
                     return _genList(row["23"], "23");
+                } else
+                    return "-";
+            }
+        }, {
+            // 截图 idx: 11
+            data: "15",
+            render: function (data, type, row, meta) {
+                if (data) {
+                    return _genList(row["15"], "15");
                 } else
                     return "-";
             }

@@ -2,6 +2,8 @@
  * Created by shen on 2016/7/18.
  */
 
+"use strict";
+
 require("semantic/semantic.min.css");
 require("../../css/lib/jquery.dataTables.min.css");
 require("../../css/lib/mobiscroll.custom-3.0.0.min.css");

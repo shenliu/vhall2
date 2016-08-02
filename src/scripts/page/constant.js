@@ -318,6 +318,9 @@ export var Constant = {
         // channel status: 点击每个绿红td
         monitor_channel_query_list: host + "stream_mod_history_log?streamid={id}&mod={k}",
 
+        // error stat: 第一个柱状图
+        monitor_error_stat_overview: host + "error_count_history",
+
         //-------------------------------------------------------------------------------//
 
         monitor_stream_query_list_history: host_old + "stream_mod_code_query?streamid={id}&hostname={host_old}&code={code}",
@@ -325,7 +328,7 @@ export var Constant = {
 
         monitor_host: host_old + "hosts",
 
-        monitor_error_stat_overview: host_old + "stream_error_count_query",
+
         monitor_error_stat_host: host_old + "stream_host_error_count_query",
         monitor_error_stat_oneday: host_old + "oneday_error_count_query",
 

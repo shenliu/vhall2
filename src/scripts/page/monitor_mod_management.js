@@ -2,6 +2,8 @@
  * Created by shen on 2016/7/27.
  */
 
+"use strict";
+
 require("semantic/semantic.min.css");
 require("../../css/lib/jquery.dataTables.min.css");
 require("../../css/common/common.less");
