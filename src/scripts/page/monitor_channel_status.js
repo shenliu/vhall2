@@ -50,7 +50,7 @@ function channel_error() {
                     if (!(x in datas)) {
                         datas[x] = [];
                     }
-                    datas[x].push(y);
+                    datas[x].push(y || 0);
                 }
             });
         });
@@ -263,6 +263,8 @@ function _graph_bar(dom, axis, legend, series) {
         }],
         xAxis: [{
             type: 'category',
+            boundaryGap: true,
+            axisLine: {onZero: true},
             name: "时间",
             axisLabel: {
                 rotate: -15
@@ -271,11 +273,9 @@ function _graph_bar(dom, axis, legend, series) {
         }],
         yAxis: [{
             name: '个数',
-            minInterval: 1,
             type: 'value'
         }],
         series: series
     };
-
     myChart.setOption(option);
 }
