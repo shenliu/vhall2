@@ -41,6 +41,7 @@ function event() {
         _modal_mod(e);
     });
 
+    // 编辑 模块
     $(document).on("click", ".vh-mod-edit", function(e) {
         _modal_mod(e, 1);
     });
@@ -120,5 +121,55 @@ function event() {
         var target = $(e.currentTarget);
         target.removeClass("error-table");
         modal.find(".ui.error.message").html("").hide();
+    }
+
+    // 添加 消息
+    $(document).on("click", ".vh-mod-add-info", function(e) {
+        _modal_info(e);
+    });
+
+    function _modal_info(e, edit) {
+        var btn = $(e.currentTarget);
+        $(".ui.modal.vh-modal-info")
+            .modal({
+                closable: false,
+                onShow: function () {
+                    var modal = $(".ui.modal.vh-modal-info");
+                    var mod_name = btn.attr("data-name");
+                    var mod_code = btn.attr("data-code");
+                    // 设置模块名称和编号
+                    modal.find("[name=mod_name]").val(mod_name);
+                    modal.find("[name=mod_code]").val(mod_code);
+                },
+                onApprove: function($element) {
+                    var modal = $(".ui.modal.vh-modal-info");
+                    var type = modal.find("[type=hidden]").val();
+
+                }
+            }).modal('setting', 'transition', "slide up")
+            .modal('show').modal("refresh");
+    }
+
+    // 删除 模块
+    $(document).on("click", ".vh-mod-delete", function(e) {
+        _modal_delete(e);
+    });
+
+    function _modal_delete(e) {
+        var btn = $(e.currentTarget);
+        $(".ui.modal.vh-modal-delete")
+            .modal({
+                closable: false,
+                blurring: true,
+                onShow: function () {
+                    var mod_name = btn.attr("data-name");
+                    var modal = $(".ui.modal.vh-modal-delete");
+                    modal.find(".content").html("确定删除< " + mod_name + " >模块吗?").css("fontSize", "1.2rem");
+                },
+                onApprove: function($element) {
+                    var mod_code = btn.attr("data-code");
+                }
+            }).modal('setting', 'transition', "slide up")
+            .modal('show').modal("refresh");
     }
 }

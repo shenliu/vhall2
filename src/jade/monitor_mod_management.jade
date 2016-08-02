@@ -24,6 +24,11 @@ block content
     +modal('vh-modal-mod small', '模块', true, false, true, '确定|approve primary', '取消|deny')
         include _tpl_monitor_add_or_modify_mod
 
+    +modal('vh-modal-info long', '消息', true, false, true, '确定|approve primary', '取消|deny')
+        include _tpl_monitor_add_or_modify_info
+
+    +modal('vh-modal-delete small', '注意', true, false, true, '确定|approve primary', '取消|deny')
+
     script(type="text/template" id="tpl-table-list").
         <div class="ui relaxed dividing list vh-mod">
             <div class="item">
@@ -35,10 +40,10 @@ block content
                             <button class="circular ui icon button tiny vh-mod-edit" title="编辑模块">
                                 <i class="icon write" />
                             </button>
-                            <button class="circular ui icon button tiny vh-mod-add-message" title="添加消息">
+                            <button class="circular ui icon button tiny vh-mod-add-info" data-name="<%- modName %>" data-code="<%- modCode %>" title="添加消息">
                                 <i class="icon plus" />
                             </button>
-                            <button class="circular ui icon button tiny vh-mod-delete" title="移除模块">
+                            <button class="circular ui icon button tiny vh-mod-delete" data-name="<%- modName %>" data-code="<%- modCode %>" title="删除模块">
                                 <i class="icon trash outline" />
                             </button>
                         </div>

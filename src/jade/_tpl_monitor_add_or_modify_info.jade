@@ -1,0 +1,60 @@
+//-
+    Created by shen on 2016/8/2.
+
+    mod management page
+
+div.container.ui
+    div.ui.equal.width.form
+        div.fields
+            div.field
+                label 模块名称
+                input(type="hidden")
+                input(type="text",name="mod_name",disabled="disabled")
+            div.field
+                label 模块编号
+                input(type="text",name="mod_code",disabled="disabled")
+        div.fields
+            div.field
+                label 信息名称
+                input(type="text",name="info_name")
+            div.field
+                label 信息编号
+                input(type="number",name="info_code")
+            div.field
+                label 信息类别
+                div.ui.selection.dropdown
+                    input(type="hidden", name="info_type", value="2")
+                    i.dropdown.icon
+                    div.text 正常
+                    div.menu
+                        div.item.active.selected(data-value="2") 正常
+                        div.item(data-value="4") 错误
+        div.fields
+            div.field
+                label 信息频率
+                div.ui.selection.dropdown
+                    input(type="hidden", name="info_freq", value="1")
+                    i.dropdown.icon
+                    div.text 实时
+                    div.menu
+                        div.item.active.selected(data-value="1") 实时
+                        div.item(data-value="2") 10秒间隔
+                        div.item(data-value="3") 60秒以上间隔\
+            div.field.inline
+                div.ui.checkbox(style="transform: translateY(150%);")
+                    input.hidden(type="checkbox",name="info_channel")
+                    label 频道相关
+            div.field.inline
+                div.ui.checkbox(style="transform: translateY(150%);")
+                    input.hidden(type="checkbox",name="info_server")
+                    label 服务器相关
+        div.fields
+            div.field
+                label 字段
+                input(type="text",name="info_field")
+        div.fields
+            div.field
+                label 说明及处理方案
+                textarea(rows="10",name="info_desc")
+        div.fields.vh-align-center
+            div.ui.error.message(style="margin:0 auto;")
