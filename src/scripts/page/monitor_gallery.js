@@ -222,7 +222,7 @@ function _event() {
 
             if (keys && keys.length) {
                 var domain = keys[1] ? keys[1] : keys[0];
-                Tool.playStream(domain);
+                Tool.playStream(domain, id);
             }
 
         }, null);

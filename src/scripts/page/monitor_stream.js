@@ -440,7 +440,7 @@ function monitor_table_event_show_stream() {
         var type = _td.attr("data-type");
 
         var domain = that.text().split(":")[0].trim();
-        Tool.playStream(domain);
+        Tool.playStream(domain, id);
     });
 
     return;

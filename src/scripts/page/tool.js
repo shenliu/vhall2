@@ -221,8 +221,9 @@ function dropdown() {
 /**
  * 播放流媒体 该函数被export 用在gallery页面中
  * @param domain
+ * @param id
  */
-function playStream(domain) {
+function playStream(domain, id) {
     let hash, url;
 
     domain = domain.replace(/_wap/g, ""); // 去掉所有_wap
@@ -334,7 +335,7 @@ export var Tool = {
 
     dropdown: dropdown,
 
-    playStream: function(domain) {
-        playStream(domain);
+    playStream: function(domain, id) {
+        playStream(domain, id);
     }
 };
