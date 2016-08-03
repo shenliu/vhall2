@@ -440,41 +440,7 @@ function monitor_table_event_show_stream() {
         var type = _td.attr("data-type");
 
         var domain = that.text().split(":")[0].trim();
-        var url, hash;
-
-        domain = domain.replace(/_wap/g, ""); // 去掉所有_wap
-
-        if (domain.indexOf("rtmp") !== -1) { // rtmp
-            // 格式: rtmp://domain/vhall/id
-            hash = ["rtmp://", domain, "/vhall/", id];
-            url = './player/srs.html#' + hash.join("");
-        } else if (domain.indexOf("hls") !== -1) { // hls
-            // 格式: http://cn_domain/vhall/id/livestream.m3u8
-            // 格式: http://cc_domain/vhall/id/index.m3u8
-            // 格式: http://xyhlslivepc/vhall/id/livestream.m3u8
-            var suffix = domain.startsWith("cc") ? "/index.m3u8" : "/livestream.m3u8";
-            hash = ["http://", domain, "/vhall/", id, suffix];
-            url = './player/jwp.html#' + hash.join("");
-        } else {
-            return;
-        }
-
-        $(".ui.modal.vh-modal-player")
-            .modal({
-                closable: true,
-                onShow: function() {
-                    $('.ui.embed').embed({
-                        url: encodeURI(url)
-                    });
-                },
-                onHide: function() {
-                    var ifr = $("iframe")[0];
-                    ifr.contentWindow.player_stop();
-                    $('.ui.embed').find(".embed").remove();
-                }
-            })
-            .modal('setting', 'transition', "fly down")
-            .modal('show').modal("refresh");
+        Tool.playStream(domain);
     });
 
     return;

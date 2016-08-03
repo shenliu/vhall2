@@ -25,14 +25,37 @@ $(function () {
 });
 
 let tpl_table_list = _.template($("#tpl-table-list").html());
+const COLOR = ['red', 'orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown', 'grey', 'black'];
 
 function init() {
-    var html = tpl_table_list({
-        modName: "助手",
-        modCode: "1"
+    var arr = [
+        {
+            modName: "助手",
+            modCode: "1",
+            color: COLOR[Tool.random(0, 12)]
+        },
+        {
+            modName: "srs",
+            modCode: "2",
+            color: COLOR[Tool.random(0, 12)]
+        },
+        {
+            modName: "多码流转码",
+            modCode: "16",
+            color: COLOR[Tool.random(0, 12)]
+        }
+    ];
+    _list(arr);
+}
+
+function _list(arr) {
+    var html = [];
+    $(arr).each(function(idx, o) {
+        var frag = tpl_table_list(o);
+        html.push(frag);
     });
 
-    $("#vh-table-list-bar").append(html);
+    $("#vh-table-list-bar").append(html.join(""));
 }
 
 function event() {

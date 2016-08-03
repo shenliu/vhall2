@@ -218,6 +218,50 @@ function dropdown() {
     $(".ui.dropdown").dropdown();
 }
 
+/**
+ * 播放流媒体 该函数被export 用在gallery页面中
+ * @param domain
+ */
+function playStream(domain) {
+    let hash, url;
+
+    domain = domain.replace(/_wap/g, ""); // 去掉所有_wap
+
+    if (domain.indexOf("rtmp") !== -1) { // rtmp
+        // 格式: rtmp://domain/vhall/id
+        hash = ["rtmp://", domain, "/vhall/", id];
+        url = './player/srs.html#' + hash.join("");
+    } else if (domain.indexOf("hls") !== -1) { // hls
+        // 格式: http://cn_domain/vhall/id/livestream.m3u8
+        // 格式: http://cc_domain/vhall/id/index.m3u8
+        var suffix = domain.startsWith("cc") ? "/index.m3u8" : "/livestream.m3u8";
+        hash = ["http://", domain, "/vhall/", id, suffix];
+        url = './player/jwp.html#' + hash.join("");
+    }
+
+    if (url) {
+        var modal = $(".ui.modal.vh-modal-player");
+        modal.modal({
+            closable: true,
+            onShow: function() {
+                $('.ui.embed').embed({
+                    url: encodeURI(url)
+                });
+            },
+            onVisible: function() {
+                modal.modal("refresh");
+            },
+            onHide: function() {
+                var ifr = $("iframe")[0];
+                ifr.contentWindow.player_stop();
+                $('.ui.embed').find(".embed").remove();
+            }
+        })
+            .modal('setting', 'transition', "slide down")
+            .modal('show').modal("refresh");
+    }
+}
+
 export var Tool = {
     xhr_get: function (url, done, fail) {
         return $.ajax({
@@ -288,5 +332,9 @@ export var Tool = {
         }
     },
 
-    dropdown: dropdown
+    dropdown: dropdown,
+
+    playStream: function(domain) {
+        playStream(domain);
+    }
 };
