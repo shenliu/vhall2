@@ -3,6 +3,7 @@
 require("semantic/semantic.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
+require("../../css/page/error_stat.less");
 
 import * as _ from 'lodash';
 
