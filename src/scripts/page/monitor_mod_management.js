@@ -14,7 +14,9 @@ import * as _ from 'lodash';
 
 import {Constant} from './constant';
 
-let mod_codes = [1,3,5,7,9]; // 记录已经存在的模块ID
+let mod_codes = []; // 记录已经存在的模块ID 防止冲突
+
+let info_codes = {}; // 记录已经存在的信息编号 防止冲突
 
 import {Tool} from './tool';
 
@@ -31,17 +33,17 @@ function init() {
     var arr = [
         {
             modName: "助手",
-            modCode: "1",
+            modCode: 1,
             color: COLOR[Tool.random(0, 12)]
         },
         {
             modName: "srs",
-            modCode: "2",
+            modCode: 2,
             color: COLOR[Tool.random(0, 12)]
         },
         {
             modName: "多码流转码",
-            modCode: "16",
+            modCode: 16,
             color: COLOR[Tool.random(0, 12)]
         }
     ];
@@ -53,6 +55,7 @@ function _list(arr) {
     $(arr).each(function(idx, o) {
         var frag = tpl_table_list(o);
         html.push(frag);
+        mod_codes.push(o.modCode);
     });
 
     $("#vh-table-list-bar").append(html.join(""));

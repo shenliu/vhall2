@@ -321,6 +321,9 @@ export var Constant = {
         // error stat: 第一个柱状图
         monitor_error_stat_overview: host + "error_count_history",
 
+        // error stat: 数个饼图
+        monitor_error_stat_oneday: host + "error_count_oneday",
+
         //-------------------------------------------------------------------------------//
 
         monitor_stream_query_list_history: host_old + "stream_mod_code_query?streamid={id}&hostname={host_old}&code={code}",
@@ -330,7 +333,7 @@ export var Constant = {
 
 
         monitor_error_stat_host: host_old + "stream_host_error_count_query",
-        monitor_error_stat_oneday: host_old + "oneday_error_count_query",
+
 
         monitor_log_search: host_old + "search?streamid={id}&hostname={host_old}&mod={mod}&code={code}&day={date}&timestart={start}&timeend={end}",
         monitor_duplicate_stream: host_old + "stream_badpush",

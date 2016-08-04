@@ -20,7 +20,7 @@ var curCode; // 当前点击饼图后的错误代码code
 // init
 $(function () {
     monitor_error_overview();
-    //monitor_error_oneday();
+    monitor_error_oneday();
     Tool.dropdown();
 });
 
@@ -74,6 +74,98 @@ function monitor_error_overview() {
         monitor_error_overview_graph(dom, times, mods, series, null);
 
     }, null);
+}
+
+/**
+ *  第一个柱状图 总览图
+ */
+function monitor_error_overview_graph(dom, axis, legend, series, doEvent) {
+    var myChart = E.init(dom);
+
+    var option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: legend,
+            x: "right"
+        },
+        grid: [{
+            left: '20',
+            right: '40',
+            bottom: '50',
+            containLabel: true
+        }],
+        xAxis: [{
+            type: 'category',
+            boundaryGap: true,
+            axisLine: {onZero: true},
+            name: "时间",
+            axisLabel: {
+                rotate: -30
+            },
+            data: axis
+        }],
+        yAxis: [{
+            name: '个数',
+            type: 'value'
+        }],
+        series: series
+    };
+
+    myChart.setOption(option);
+
+    doEvent && doEvent(myChart);
+}
+
+/**
+ *  饼图
+ */
+function monitor_error_oneday() {
+    Tool.xhr_get(Constant.url.monitor_error_stat_oneday, function (data, textStatus, jqXHR) {
+        $.each(data, function (k, v) { // k: 1, 2, 11, 12, ... v: {14002: 29, ...}
+            var name = Tool.getModule(k), sum = 0;
+            var legend = [], vals = [], series = [];
+            $.each(v, function (i, j) { // i: 14002  j: 29
+                var _s = i + " " + Tool.getMessage(i);
+                legend.push(_s);
+                vals.push({
+                    value: j,
+                    name: _s
+                });
+                sum += j;
+            });
+
+            series.push({
+                name: name,
+                type: 'pie',
+                radius: '50%',
+                center: ['50%', '75%'],
+                data: vals,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            });
+
+            $(".vh-error-stat-header-pie").html("一天数据");
+
+            var dom = $('.vh-error-stat-modules-' + k)[0];
+            if (dom) {
+                var instance = E.getInstanceByDom(dom);
+                if (instance) {
+                    instance.dispose();
+                }
+                $(dom).prev("h5").html($(dom).prev("h5").html() + " (" + sum + ")"); // 统计各个总数
+                monitor_error_modules_graph(dom, legend, series);
+            }
+
+        });
+
+    });
 }
 
 
@@ -167,98 +259,6 @@ function monitor_error_overview_bak() {
         monitor_error_overview_graph(dom, axis, legend, series, null);
     }, null);
 
-}
-
-/**
- *  第一个柱状图 总览图
- */
-function monitor_error_overview_graph(dom, axis, legend, series, doEvent) {
-    var myChart = E.init(dom);
-
-    var option = {
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: legend,
-            x: "right"
-        },
-        grid: [{
-            left: '20',
-            right: '40',
-            bottom: '50',
-            containLabel: true
-        }],
-        xAxis: [{
-            type: 'category',
-            boundaryGap: true,
-            axisLine: {onZero: true},
-            name: "时间",
-            axisLabel: {
-                rotate: -30
-            },
-            data: axis
-        }],
-        yAxis: [{
-            name: '个数',
-            type: 'value'
-        }],
-        series: series
-    };
-
-    myChart.setOption(option);
-
-    doEvent && doEvent(myChart);
-}
-
-/**
- *  9个饼图
- */
-function monitor_error_oneday() {
-    Tool.xhr_get(Constant.url.monitor_error_stat_oneday, function (data, textStatus, jqXHR) {
-        $.each(data, function (k, v) { // k: 1, 2, 11, 12, ... v: {14002: 29, ...}
-            var name = Tool.getModule(k), sum = 0;
-            var legend = [], vals = [], series = [];
-            $.each(v, function (i, j) { // i: 14002  j: 29
-                var _s = i + " " + Tool.getMessage(i);
-                legend.push(_s);
-                vals.push({
-                    value: j,
-                    name: _s
-                });
-                sum += j;
-            });
-
-            series.push({
-                name: name,
-                type: 'pie',
-                radius: '50%',
-                center: ['50%', '75%'],
-                data: vals,
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            });
-
-            $(".vh-error-stat-header-pie").html("一天数据");
-
-            var dom = $('.vh-error-stat-modules-' + k)[0];
-            if (dom) {
-                var instance = E.getInstanceByDom(dom);
-                if (instance) {
-                    instance.dispose();
-                }
-                $(dom).prev("h5").html($(dom).prev("h5").html() + " (" + sum + ")"); // 统计各个总数
-                monitor_error_modules_graph(dom, legend, series);
-            }
-
-        });
-
-    });
 }
 
 /**
