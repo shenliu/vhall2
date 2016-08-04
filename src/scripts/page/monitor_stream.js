@@ -51,7 +51,7 @@ function monitor_table() {
                 return data;
             }
         }
-        ,"order": [[ 14, "desc" ]]
+        ,"order": [[ 16, "desc" ]]
         ,"columns": [{
             // 流ID idx: 0
             data: "streamid",
@@ -175,6 +175,17 @@ function monitor_table() {
             // 移动 idx: 11
             orderDataType: "dom-collect-number",
             type: "numeric",
+            data: "6",
+            render: function (data, type, row, meta) {
+                if (data) {
+                    return _genList(row["6"], row["streamid"], "6");
+                } else
+                    return "-";
+            }
+        }, {
+            // 移动用户 idx: 12
+            orderDataType: "dom-collect-number",
+            type: "numeric",
             data: "user.cdn.6",
             render: function (data, type, row, meta) {
                 if (data) {
@@ -183,7 +194,18 @@ function monitor_table() {
                     return "-";
             }
         }, {
-            // Flash idx: 12
+            // Flash idx: 13
+            orderDataType: "dom-collect-number",
+            type: "numeric",
+            data: "7",
+            render: function (data, type, row, meta) {
+                if (data) {
+                    return _genList(row["7"], row["streamid"], "7");
+                } else
+                    return "-";
+            }
+        }, {
+            // Flash用户 idx: 14
             orderDataType: "dom-collect-number",
             type: "numeric",
             data: "user.cdn.7",
@@ -194,7 +216,7 @@ function monitor_table() {
                     return "-";
             }
         }, {
-            // 卡顿用户数 idx: 13
+            // 卡顿用户数 idx: 15
             orderDataType: "dom-user-number",
             type: "numeric",
             data: "user.baduser",
@@ -203,7 +225,7 @@ function monitor_table() {
                 return dom.join("");
             }
         }, {
-            // 用户总数 idx: 14
+            // 用户总数 idx: 16
             orderDataType: "dom-user-number",
             type: "numeric",
             data: "user.alluser",
@@ -1045,8 +1067,8 @@ function _filter(table, isMultiple) {
                     }
                     break;
 
-                case 13: // 卡顿用户数
-                case 14: // 用户总数
+                case 15: // 卡顿用户数
+                case 16: // 用户总数
                     if (dimension === "number") {
                         switch(oper) {
                             case 1: // <=
