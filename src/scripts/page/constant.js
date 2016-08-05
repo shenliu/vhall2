@@ -334,6 +334,9 @@ export var Constant = {
         monitor_get_mods: host + "get_mod",
         monitor_get_codes: host + "get_code",
 
+        // doc conversion: 表格
+        monitor_doc_conversion: host + "doc_transform",
+
         //-------------------------------------------------------------------------------//
 
         monitor_stream_query_list_history: host_old + "stream_mod_code_query?streamid={id}&hostname={host_old}&code={code}",
@@ -345,8 +348,7 @@ export var Constant = {
 
         monitor_duplicate_stream: host_old + "stream_badpush",
         monitor_gallery: host_old + "stream_photo",
-        monitor_online_users: host_old + "streaminfo",
-        monitor_doc_conversion: host_old + "get_doc"
+        monitor_online_users: host_old + "streaminfo"
     },
 
     level: {
