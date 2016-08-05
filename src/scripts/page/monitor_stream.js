@@ -465,6 +465,14 @@ function monitor_table_event_show_stream() {
         Tool.playStream(domain, id);
     });
 
+    // 双击图片播放
+    $(table.column(1).nodes()).on("dblclick", function(e) {
+        var td = $(e.currentTarget);
+        var tr = td.parent("tr");
+        td = tr.find("td").eq(12);
+        td.find(".item").trigger("click");
+    });
+
     return;
 
     // 汇总
@@ -864,7 +872,7 @@ function _genList(data, streamID, k) {
  * @private
  */
 function _genCollect(data, type, k) {
-    if (data["user"]["alluser"] > 0) {
+    //if (data["user"]["alluser"] > 0) {
         var streamID = data["streamid"];
         var all = data["user"]["cdn"][k];
         var arr = [];
@@ -877,8 +885,10 @@ function _genCollect(data, type, k) {
             total += v["2"] + v["4"];
         });
 
-        if (total === 0) { // 还为0
-            return "-";
+        if (total === 0 && k == 6) { // 还为0 手动添加链接地址
+            arr.push({
+                "cnrtmplive01.open.vhall.com": "-/-"
+            });
         }
 
         return templateCollect({
@@ -891,9 +901,9 @@ function _genCollect(data, type, k) {
             type: type
             ,more: arr.length > 3
         });
-    } else {
-        return "-";
-    }
+    //} else {
+    //    return "**";
+    //}
 }
 
 function _genImg() {
