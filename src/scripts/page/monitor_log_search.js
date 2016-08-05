@@ -23,21 +23,20 @@ $(function () {
 });
 
 function _init(callback) {
-    // <模块>初始化
-    var html = ['<div class="item" data-value="">无</div>'];
-    $.each(Tool.getModules(), function (k, v) {
-        html.push('<div class="item" data-value="', k, '">', v, '</div>');
-    });
-    $(".vh-search-module").find(".menu").html(html.join(""));
-
     $.when(
         // 流ID
         $.get(Constant.url.monitor_get_streams),
         // 主机
-        $.get(Constant.url.monitor_get_hosts)
-    ).done(function (data_id, data_host) {
+        $.get(Constant.url.monitor_get_hosts),
+        // 模块
+        $.get(Constant.url.monitor_get_mods),
+        // 错误代码
+        $.get(Constant.url.monitor_get_codes)
+    ).done(function (data_id, data_host, data_mod, data_code) {
         data_id = JSON.parse(data_id[0]);
         data_host = JSON.parse(data_host[0]);
+        data_mod = JSON.parse(data_mod[0]);
+        data_code = JSON.parse(data_code[0]);
 
         $('.ui.dropdown')
             .dropdown({
@@ -46,7 +45,7 @@ function _init(callback) {
             });
 
         // 流ID
-        html = ['<div class="item" data-value="">无</div>'];
+        let html = ['<div class="item" data-value="">无</div>'];
         $(data_id).each(function (i, elem) {
             html.push('<div class="item" data-value="', elem, '">', elem, '</div>');
         });
@@ -57,11 +56,24 @@ function _init(callback) {
         $(data_host).each(function (i, elem) {
             html.push('<div class="item" data-value="', elem, '">', elem, '</div>');
         });
-        html.push('<div class="item" data-value="None">None</div>');
         $(".vh-search-host").find(".menu").html(html.join(""));
 
+        // 模块
+        html = ['<div class="item" data-value="">无</div>'];
+        $(data_mod).each(function (i, elem) {
+            html.push('<div class="item" data-value="', elem, '">', Tool.getModule(elem), '</div>');
+        });
+        $(".vh-search-module").find(".menu").html(html.join(""));
+
+        // 错误代码
+        html = ['<div class="item" data-value="">无</div>'];
+        $(data_code).each(function (i, elem) {
+            html.push('<div class="item" data-value="', elem, '">', elem, '</div>');
+        });
+        $(".vh-search-code").find(".menu").html(html.join(""));
+
         // 日期
-        var now = new Date(),
+        /*var now = new Date(),
             until = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
 
         $('#vh-date').mobiscroll().date({
@@ -92,7 +104,7 @@ function _init(callback) {
             display: 'bottom',
             timeFormat: 'HH:ii:59',
             timeWheels: 'HHii'
-        }).val("23:59:59");
+        }).val("23:59:59"); */
 
         callback && callback();
     });
@@ -103,7 +115,7 @@ function monitor_log_search_event() {
 
     // 查询按钮
     bar.find(".vh-search-btn").on("click", function (e) {
-        var id, host, module, code, date, timeStart, timeEnd;
+        var id, host, module, code, type, date, timeStart, timeEnd;
 
         // 流ID
         id = bar.find(".ui.dropdown.vh-search-id").dropdown("get value");
@@ -119,20 +131,19 @@ function monitor_log_search_event() {
         }
 
         // 错误代码
-        code = bar.find(".vh-search-code input").val().trim();
-        if (code == "") {
-            _message();
-            return;
-        }
+        code = bar.find(".ui.dropdown.vh-search-code").dropdown("get value");
+
+        // 类型
+        type = bar.find(".ui.dropdown.vh-search-type").dropdown("get value");
 
         // 时间范围
-        date = bar.find("#vh-date").val();
+        /*date = bar.find("#vh-date").val();
         timeStart = bar.find("#vh-time-start").val();
-        timeEnd = bar.find("#vh-time-end").val();
+        timeEnd = bar.find("#vh-time-end").val();*/
 
         $(e.currentTarget).addClass("loading").attr("disabled", "disabled");
 
-        monitor_log_search_table(id, host, module, code, date, timeStart, timeEnd);
+        monitor_log_search_table(id, host, module, code, type, date, timeStart, timeEnd);
     });
 
     // message close
@@ -157,19 +168,25 @@ function monitor_log_search_event() {
  * @param host
  * @param module
  * @param code
+ * @param type
  * @param date
  * @param timeStart
  * @param timeEnd
  */
-function monitor_log_search_table(id, host, module, code, date, timeStart, timeEnd) {
-    var url = Constant.url.monitor_log_search
-        .replace("{id}", id)
-        .replace("{host}", host)
-        .replace("{mod}", module)
-        .replace("{code}", code)
-        .replace("{date}", date.replace(/\//g, ""))
-        .replace("{start}", timeStart)
-        .replace("{end}", timeEnd);
+function monitor_log_search_table(id, host, module, code, type, date, timeStart, timeEnd) {
+    var url = Constant.url.monitor_log_search.replace("{mod}", module);
+    if (id) {
+        url += "&streamid=" + id;
+    }
+    if (host) {
+        url += "&hostname=" + host;
+    }
+    if (code) {
+        url += "&code=" + code;
+    }
+    if (type) {
+        url += "&type=" + type;
+    }
 
     var $table = $("table.ui.table");
 
@@ -206,13 +223,19 @@ function monitor_log_search_table(id, host, module, code, date, timeStart, timeE
                 }
             }, {
                 // 错误代码 idx: 3
-                data: "code"
+                data: "code",
+                render: function (data, type, row, meta) {
+                    if (data) {
+                        return data + " " + Tool.getMessage(row["code"]);
+                    } else
+                        return "-";
+                }
             }, {
                 // 时间 idx: 4
                 data: "timestamp",
                 render: function (data, type, row, meta) {
                     if (data) {
-                        return new Date(data.$date).toISOString().replace("T", " ");
+                        return Tool.dateFormat(new Date(data * 1000), "yyyy-MM-dd hh:mm:ss.S");
                     } else
                         return "-";
                 }
@@ -281,7 +304,7 @@ function monitor_log_search_table(id, host, module, code, date, timeStart, timeE
                 data: "attr",
                 render: function (data, type, row, meta) {
                     var html = ["<ul>"];
-                    $.each(data, function (k, v) {
+                    $.each(JSON.parse(data), function (k, v) {
                         html.push('<li>', k, ": ", v, '</li>');
                     });
                     html.push("</ul>");

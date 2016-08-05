@@ -324,6 +324,16 @@ export var Constant = {
         // error stat: 数个饼图
         monitor_error_stat_oneday: host + "error_count_oneday",
 
+        // log search: 表格  // &day={date}&timestart={start}&timeend={end}
+        // streamid={id}&hostname={host}&mod={mod}&code={code}&type={type}
+        monitor_log_search: host + "log_search?mod={mod}",
+
+        // log search: 所有 流ID 主机名 模块 错误代码
+        monitor_get_streams: host + "get_streamid",
+        monitor_get_hosts: host + "get_hostname",
+        monitor_get_mods: host + "get_mod",
+        monitor_get_codes: host + "get_code",
+
         //-------------------------------------------------------------------------------//
 
         monitor_stream_query_list_history: host_old + "stream_mod_code_query?streamid={id}&hostname={host_old}&code={code}",
@@ -331,18 +341,12 @@ export var Constant = {
 
         monitor_host: host_old + "hosts",
 
-
         monitor_error_stat_host: host_old + "stream_host_error_count_query",
 
-
-        monitor_log_search: host_old + "search?streamid={id}&hostname={host_old}&mod={mod}&code={code}&day={date}&timestart={start}&timeend={end}",
         monitor_duplicate_stream: host_old + "stream_badpush",
         monitor_gallery: host_old + "stream_photo",
         monitor_online_users: host_old + "streaminfo",
-        monitor_doc_conversion: host_old + "get_doc",
-
-        monitor_get_streams: host_old + "get_stream",
-        monitor_get_hosts: host_old + "get_host"
+        monitor_doc_conversion: host_old + "get_doc"
     },
 
     level: {

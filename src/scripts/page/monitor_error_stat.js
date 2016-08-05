@@ -169,6 +169,32 @@ function monitor_error_oneday() {
     });
 }
 
+/**
+ * 饼状图
+ * @param dom
+ * @param legend
+ * @param series
+ */
+function monitor_error_modules_graph(dom, legend, series) {
+    var myChart = E.init(dom);
+
+    var option = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: legend
+        },
+        series: series
+    };
+    myChart.setOption(option);
+
+    //monitor_error_modules_event(myChart);
+}
+
 
 // ---------------------------------------------------------------------------- //
 
@@ -262,31 +288,7 @@ function monitor_error_overview_bak() {
 
 }
 
-/**
- * 9个饼状图
- * @param dom
- * @param legend
- * @param series
- */
-function monitor_error_modules_graph(dom, legend, series) {
-    var myChart = E.init(dom);
 
-    var option = {
-        tooltip: {
-            trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-        legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: legend
-        },
-        series: series
-    };
-    myChart.setOption(option);
-
-    monitor_error_modules_event(myChart);
-}
 
 /**
  * 饼状图点击事件

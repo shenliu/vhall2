@@ -37,18 +37,31 @@ block content
                     .menu
 
                 .ui.sub.header 错误代码:
-                .ui.input.vh-search-code(style="width:100px;")
-                    input(title='', type='text')
-            .item
-                .ui.vh-search-time.input
-                    .ui.sub.header 日期:
-                    input#vh-date(title='', type='text', style="width:100px;")
+                .ui.selection.dropdown.search.vh-search-code(style="width:100px;")
+                    input(type='hidden', name='search_code')
+                    i.dropdown.icon
+                    .default.text 无
+                    .menu
 
-                    .ui.sub.header 起始时间:
-                    input#vh-time-start(title='', type='text', style="width:80px;")
+                .ui.sub.header 类型:
+                .ui.selection.dropdown.search.vh-search-type(style="width:50px;")
+                    input(type='hidden', name='search_type')
+                    i.dropdown.icon
+                    .default.text 无
+                    .menu
+                        div.item(data-value="2") 正常
+                        div.item(data-value="4") 错误
 
-                    .ui.sub.header 结束时间:
-                    input#vh-time-end(title='', type='text', style="width:80px;")
+                //-.item
+                    .ui.vh-search-time.input
+                        .ui.sub.header 日期:
+                        input#vh-date(title='', type='text', style="width:100px;")
+
+                        .ui.sub.header 起始时间:
+                        input#vh-time-start(title='', type='text', style="width:80px;")
+
+                        .ui.sub.header 结束时间:
+                        input#vh-time-end(title='', type='text', style="width:80px;")
 
                 button.ui.button.blue.vh-search-btn 查询
 
@@ -98,4 +111,3 @@ block content
         div.header 注意事项
         ul.list
             li 必须选择一个&lt;模块&gt;.
-            li 必须填写&lt;错误代码&gt;.
