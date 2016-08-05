@@ -87,16 +87,18 @@ function _init(callback) {
             max: now
         }).val(Tool.dateFormat(now, "yyyy/MM/dd"));
 
-        $('#vh-date').mobiscroll('getInst').setVal(now);
+        $('#vh-date').mobiscroll('getInst').setVal(now);*/
 
         // 时间
+        var now = new Date(),
+            hour = now.getHours();
         $('#vh-time-start').mobiscroll().time({
             theme: 'material',
             lang: 'zh',
             display: 'bottom',
             timeFormat: 'HH:ii:00',
             timeWheels: 'HHii'
-        }).val("00:00:00");
+        }).val(hour + ":00:00");
 
         $('#vh-time-end').mobiscroll().time({
             theme: 'material',
@@ -104,7 +106,7 @@ function _init(callback) {
             display: 'bottom',
             timeFormat: 'HH:ii:59',
             timeWheels: 'HHii'
-        }).val("23:59:59"); */
+        }).val((hour + 1) + ":00:00");
 
         callback && callback();
     });
@@ -137,9 +139,9 @@ function monitor_log_search_event() {
         type = bar.find(".ui.dropdown.vh-search-type").dropdown("get value");
 
         // 时间范围
-        /*date = bar.find("#vh-date").val();
+        /*date = bar.find("#vh-date").val();*/
         timeStart = bar.find("#vh-time-start").val();
-        timeEnd = bar.find("#vh-time-end").val();*/
+        timeEnd = bar.find("#vh-time-end").val();
 
         $(e.currentTarget).addClass("loading").attr("disabled", "disabled");
 
@@ -174,7 +176,10 @@ function monitor_log_search_event() {
  * @param timeEnd
  */
 function monitor_log_search_table(id, host, module, code, type, date, timeStart, timeEnd) {
-    var url = Constant.url.monitor_log_search.replace("{mod}", module);
+    var url = Constant.url.monitor_log_search
+        .replace("{mod}", module)
+        .replace("{start}", timeStart)
+        .replace("{end}", timeEnd);
     if (id) {
         url += "&streamid=" + id;
     }

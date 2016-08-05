@@ -326,7 +326,7 @@ export var Constant = {
 
         // log search: 表格  // &day={date}&timestart={start}&timeend={end}
         // streamid={id}&hostname={host}&mod={mod}&code={code}&type={type}
-        monitor_log_search: host + "log_search?mod={mod}",
+        monitor_log_search: host + "log_search?mod={mod}&start_time={start}&end_time={end}",
 
         // log search: 所有 流ID 主机名 模块 错误代码
         monitor_get_streams: host + "get_streamid",

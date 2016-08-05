@@ -49,19 +49,20 @@ block content
                     i.dropdown.icon
                     .default.text 无
                     .menu
+                        div.item(data-value="") 无
                         div.item(data-value="2") 正常
                         div.item(data-value="4") 错误
 
-                //-.item
-                    .ui.vh-search-time.input
-                        .ui.sub.header 日期:
-                        input#vh-date(title='', type='text', style="width:100px;")
+            .item
+                .ui.vh-search-time.input
+                    //-.ui.sub.header 日期:
+                    //-input#vh-date(title='', type='text', style="width:100px;")
 
-                        .ui.sub.header 起始时间:
-                        input#vh-time-start(title='', type='text', style="width:80px;")
+                    .ui.sub.header 起始时间:
+                    input#vh-time-start(title='', type='text', style="width:80px;")
 
-                        .ui.sub.header 结束时间:
-                        input#vh-time-end(title='', type='text', style="width:80px;")
+                    .ui.sub.header 结束时间:
+                    input#vh-time-end(title='', type='text', style="width:80px;")
 
                 button.ui.button.blue.vh-search-btn 查询
 
