@@ -887,7 +887,7 @@ function _genCollect(data, type, k) {
 
         if (total === 0 && k == 6) { // 还为0 手动添加链接地址
             arr.push({
-                "cnrtmplive01.open.vhall.com": "-/-"
+                "cnrtmplive01.open.vhall.com": "-"
             });
         }
 
