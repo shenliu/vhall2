@@ -30,6 +30,7 @@ $(function () {
     $("#vh-streamID").find("i").html(streamID);
 
     channel_quality();
+    channel_cdn();
     channel_error();
     channel_table();
 });
@@ -70,6 +71,60 @@ function channel_quality() {
         let dom = $("#vh-channel-quality")[0];
 
         _graph_bar(dom, times, legend, series);
+    }, null);
+}
+
+// CDN质量分时图
+function channel_cdn() {
+    let times = []; // x轴 时间
+    let datas = {}; // 数据
+    let cdns = []; // legend cdn名称
+
+    let url = Constant.url.monitor_channel_cdn.replace("{id}", streamID);
+    Tool.xhr_get(url, function (data, textStatus, jqXHR) {
+        // 去除数组空{}项
+        data = data.filter((item) => !$.isEmptyObject(item));
+
+        $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"cnrtmplive02.e.vhall.com": {"bad": 2, "good": 0}, ... }
+            if (!("timestamp" in elem)) {
+                return true;
+            }
+            times.push(elem["timestamp"]);
+            delete elem["timestamp"]; // 删除timestamp属性
+
+            for (var k in elem) {
+                if (_.indexOf(cdns, k) === -1) {
+                    cdns.push(k);
+                }
+            }
+        });
+
+        $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"cnrtmplive02.e.vhall.com": {"bad": 2, "good": 0}, ... }
+            $(cdns).each(function(i, cdn) {
+                var o = elem[cdn];
+                if (o) {
+                    if (!(cdn in datas)) {
+                        datas[cdn] = [];
+                    }
+                    var n = parseFloat(((o["bad"] / (o["bad"] + o["good"])) * 100).toFixed(2));
+                    datas[cdn].push(n || 0);
+                }
+            });
+        });
+
+        let series = [];
+        $.each(datas, function (k, v) {
+            series.push({
+                name: k,
+                type: "line",
+                //stack: '总量',
+                data: v
+            });
+        });
+
+        let dom = $("#vh-channel-cdn")[0];
+
+        _graph_line(dom, times, cdns, series);
     }, null);
 }
 
@@ -317,5 +372,46 @@ function _graph_bar(dom, axis, legend, series) {
         }],
         series: series
     };
+    myChart.setOption(option);
+}
+
+function _graph_line(dom, axis, legend, series) {
+    var myChart = E.init(dom);
+
+    var option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type : 'shadow'
+            }
+        },
+        legend: {
+            data: legend,
+            x: 'right'
+        },
+        grid: [{
+            left: '20',
+            right: '40',
+            bottom: '50',
+            containLabel: true
+        }],
+        xAxis: [{
+            type : 'category',
+            boundaryGap : true,
+            axisLine: {onZero: true},
+            name: "时间",
+            axisLabel: {
+                rotate: -15
+            },
+            data: axis
+        }],
+        yAxis: [{
+            name : '百分比',
+            //max: 110,
+            type : 'value'
+        }],
+        series: series
+    };
+
     myChart.setOption(option);
 }

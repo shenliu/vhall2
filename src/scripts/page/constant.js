@@ -321,6 +321,9 @@ export var Constant = {
         // channel status: 发起观看质量分时图
         monitor_channel_quality: host + "stream_quality_history?streamid={id}",
 
+        // channel status: CDN质量分时图
+        monitor_channel_cdn: host + "stream_cdn_quality_history?streamid={id}",
+
         // error stat: 第一个柱状图
         monitor_error_stat_overview: host + "error_count_history",
 
