@@ -102,13 +102,14 @@ function channel_cdn() {
         $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"cnrtmplive02.e.vhall.com": {"bad": 2, "good": 0}, ... }
             $(cdns).each(function(i, cdn) {
                 var o = elem[cdn];
-                if (o) {
-                    if (!(cdn in datas)) {
-                        datas[cdn] = [];
-                    }
-                    var n = parseFloat(((o["bad"] / (o["bad"] + o["good"])) * 100).toFixed(2));
-                    datas[cdn].push(n || 0);
+                var n;
+                if (o) { // 有这个cdn
+                    n = parseFloat(((o["bad"] / (o["bad"] + o["good"])) * 100).toFixed(2));
                 }
+                if (!(cdn in datas)) {
+                    datas[cdn] = [];
+                }
+                datas[cdn].push(n || 0);
             });
         });
 
