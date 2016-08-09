@@ -318,6 +318,9 @@ export var Constant = {
         // channel status: 点击每个绿红td
         monitor_channel_query_list: host + "stream_mod_history_log?streamid={id}&mod={k}",
 
+        // channel status: 发起观看质量分时图
+        monitor_channel_quality: host + "stream_quality_history?streamid={id}",
+
         // error stat: 第一个柱状图
         monitor_error_stat_overview: host + "error_count_history",
 

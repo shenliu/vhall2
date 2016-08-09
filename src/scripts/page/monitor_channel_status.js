@@ -29,9 +29,49 @@ $(function () {
     }
     $("#vh-streamID").find("i").html(streamID);
 
+    channel_quality();
     channel_error();
     channel_table();
 });
+
+// 发起观看质量分时图
+function channel_quality() {
+    let times = []; // x轴 时间
+    let datas = {}; // 数据
+
+    let url = Constant.url.monitor_channel_quality.replace("{id}", streamID);
+    Tool.xhr_get(url, function (data, textStatus, jqXHR) {
+        $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"74001": 495, ...}
+            if (!("timestamp" in elem)) {
+                return true;
+            }
+            times.push(elem["timestamp"]);
+            $.each(elem, function (x, y) { // x: "74001" y: 495
+                if (x !== "timestamp") {
+                    if (!(x in datas)) {
+                        datas[x] = [];
+                    }
+                    datas[x].push(y || 0);
+                }
+            });
+        });
+        let series = [];
+        $.each(datas, function (k, v) {
+            series.push({
+                name: Tool.getMessage(k),
+                type: "line",
+                stack: '总量',
+                data: v
+            });
+        });
+        let legend = _.map(_.keys(datas), function (i) {
+            return Tool.getMessage(i);
+        });
+        let dom = $("#vh-channel-quality")[0];
+
+        _graph_bar(dom, times, legend, series);
+    }, null);
+}
 
 // 错误分时图
 function channel_error() {
