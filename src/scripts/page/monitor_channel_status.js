@@ -60,7 +60,7 @@ function channel_quality() {
             series.push({
                 name: Tool.getMessage(k),
                 type: "line",
-                stack: '总量',
+                //stack: '总量',
                 data: v
             });
         });
