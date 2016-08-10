@@ -21,6 +21,7 @@ var curCode; // 当前点击饼图后的错误代码code
 // init
 $(function () {
     monitor_error_overview();
+    monitor_error_oneday_log();
     monitor_error_oneday();
     Tool.dropdown();
 });
@@ -78,7 +79,51 @@ function monitor_error_overview() {
 }
 
 /**
- *  第一个柱状图 总览图
+ * 第二个柱状图
+ */
+function monitor_error_oneday_log() {
+    let times = []; // x轴 时间
+    let datas = {}; // 数据
+
+    Tool.xhr_get(Constant.url.monitor_error_stat_oneday_log, function (data, textStatus, jqXHR) {
+        $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"2": { "24101": 5, "24303": 2 }, ...}
+            if (!("timestamp" in elem)) {
+                return true;
+            }
+            times.push(elem["timestamp"]);
+
+            $.each(elem, function (x, y) { // x: "2" y: { "24101": 5, "24303": 2 }
+                if (x !== "timestamp") {
+                    if (!(x in datas)) {
+                        datas[x] = [];
+                    }
+                    var num = (y && _.reduce(y, function(result, value, key) {
+                        return parseInt(result, 10) + parseInt(value, 10);
+                    }, 0)) || 0;
+                    datas[x].push(num);
+                }
+            });
+        });
+        let series = [];
+        $.each(datas, function (k, v) {
+            series.push({
+                name: Tool.getModule(k),
+                type: "bar",
+                stack: '总量',
+                data: v
+            });
+        });
+        let legend = _.map(_.keys(datas), function (i) {
+            return Tool.getModule(i);
+        });
+        let dom = $(".vh-error-stat-oneday-log")[0];
+
+        monitor_error_overview_graph(dom, times, legend, series);
+    }, null);
+}
+
+/**
+ *  柱状图 总览图
  */
 function monitor_error_overview_graph(dom, axis, legend, series, doEvent) {
     var myChart = E.init(dom);
@@ -103,7 +148,7 @@ function monitor_error_overview_graph(dom, axis, legend, series, doEvent) {
             axisLine: {onZero: true},
             name: "时间",
             axisLabel: {
-                rotate: -30
+                rotate: -15
             },
             data: axis
         }],

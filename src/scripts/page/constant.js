@@ -330,6 +330,9 @@ export var Constant = {
         // error stat: 数个饼图
         monitor_error_stat_oneday: host + "error_count_oneday",
 
+        // error stat: 第二个柱状图
+        monitor_error_stat_oneday_log: host + "error_mod_oneday_history_log",
+
         // log search: 表格  // &day={date}&timestart={start}&timeend={end}
         // streamid={id}&hostname={host}&mod={mod}&code={code}&type={type}
         monitor_log_search: host + "log_search?mod={mod}&start_time={start}&end_time={end}",
