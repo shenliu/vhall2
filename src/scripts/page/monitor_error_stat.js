@@ -84,6 +84,7 @@ function monitor_error_overview() {
 function monitor_error_oneday_log() {
     let times = []; // x轴 时间
     let datas = {}; // 数据
+    let mods = []; // 模块
 
     Tool.xhr_get(Constant.url.monitor_error_stat_oneday_log, function (data, textStatus, jqXHR) {
         $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"2": { "24101": 5, "24303": 2 }, ...}
@@ -91,19 +92,31 @@ function monitor_error_oneday_log() {
                 return true;
             }
             times.push(elem["timestamp"]);
+            delete elem["timestamp"]; // 删除timestamp属性
 
-            $.each(elem, function (x, y) { // x: "2" y: { "24101": 5, "24303": 2 }
-                if (x !== "timestamp") {
-                    if (!(x in datas)) {
-                        datas[x] = [];
-                    }
-                    var num = (y && _.reduce(y, function(result, value, key) {
+            for (var k in elem) {
+                if (_.indexOf(mods, k) === -1) {
+                    mods.push(k);
+                }
+            }
+        });
+
+        $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"2": { "24101": 5, "24303": 2 }, ...}
+            if ($.isEmptyObject(elem)) {
+                return true;
+            }
+            $(mods).each(function(i, mod) {
+                var o = elem[mod];
+                if (!(mod in datas)) {
+                    datas[mod] = [];
+                }
+                var num = (o && _.reduce(o, function(result, value, key) {
                         return parseInt(result, 10) + parseInt(value, 10);
                     }, 0)) || 0;
-                    datas[x].push(num);
-                }
+                datas[mod].push(num);
             });
         });
+
         let series = [];
         $.each(datas, function (k, v) {
             series.push({
