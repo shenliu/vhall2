@@ -131,7 +131,7 @@ function monitor_error_oneday_log() {
         });
         let dom = $(".vh-error-stat-error-mod-oneday")[0];
 
-        graph_bar(dom, times, legend, series, monitor_error_oneday_log_event);
+        graph_bar(dom, times, legend, series, error_mod_event);
     }, null);
 }
 
@@ -139,7 +139,7 @@ function monitor_error_oneday_log() {
  * 点击第二个柱状图 事件 - 第三个柱状图
  * @param myChart
  */
-function monitor_error_oneday_log_event(myChart) {
+function error_mod_event(myChart) {
     myChart.on("click", function (params) {
         var seriesName = params.seriesName;
         var mod = Tool.getKey(Tool.getModules(), seriesName);
@@ -195,7 +195,82 @@ function monitor_error_oneday_log_event(myChart) {
             });
             let dom = $(".vh-error-stat-error-code-oneday")[0];
 
-            graph_bar2(dom, times, legend, series, seriesName);
+            // 销毁上一个图型
+            var instance = E.getInstanceByDom(dom);
+            if (instance) {
+                instance.dispose();
+                var _dom = $(".vh-error-stat-error-host-oneday");
+                instance = E.getInstanceByDom(_dom[0]);
+                instance && instance.dispose();
+            }
+
+            graph_bar2(dom, times, legend, series, seriesName, error_code_event);
+        }, null);
+    });
+}
+
+/**
+ * 点击第三个柱状图 事件 - 第四个柱状图
+ * @param myChart
+ */
+function error_code_event(myChart) {
+    myChart.on("click", function (params) {
+        var codeName = params.seriesName;
+
+        let times = []; // x轴 时间
+        let datas = {}; // 数据
+        let hosts = []; // 主机
+
+        let url = Constant.url.monitor_error_stat_error_host_oneday.replace("{code}", codeName.split(" ")[0]);
+        Tool.xhr_get(url, function (data, textStatus, jqXHR) {
+            $(data).each(function (idx, elem) { // idx: 0,1,2... elem: { "xxx.com": 5, "yyy.com": 2 }
+                if (!("timestamp" in elem)) {
+                    return true;
+                }
+                times.push(elem["timestamp"]);
+                delete elem["timestamp"]; // 删除timestamp属性
+
+                for (var k in elem) {
+                    if (_.indexOf(hosts, k) === -1) {
+                        hosts.push(k);
+                    }
+                }
+            });
+
+            $(data).each(function (idx, elem) { // idx: 0,1,2... elem: { "24101": 5, "24303": 2 }
+                if ($.isEmptyObject(elem)) {
+                    return true;
+                }
+                $(hosts).each(function(i, host) {
+                    var n = elem[host] || 0;
+                    if (!(host in datas)) {
+                        datas[host] = [];
+                    }
+                    datas[host].push(n);
+                });
+            });
+
+            let series = [];
+            $.each(datas, function (k, v) {
+                series.push({
+                    name: k,
+                    type: "bar",
+                    stack: '总量',
+                    data: v
+                });
+            });
+            let legend = _.map(_.keys(datas), function (i) {
+                return i;
+            });
+            let dom = $(".vh-error-stat-error-host-oneday")[0];
+
+            // 销毁上一个图型
+            var instance = E.getInstanceByDom(dom);
+            if (instance) {
+                instance.dispose();
+            }
+
+            graph_bar2(dom, times, legend, series, codeName);
         }, null);
     });
 }
@@ -242,7 +317,7 @@ function graph_bar(dom, axis, legend, series, doEvent) {
     doEvent && doEvent(myChart);
 }
 
-function graph_bar2(dom, axis, legend, series, title) {
+function graph_bar2(dom, axis, legend, series, title, doEvent) {
     var myChart = E.init(dom);
 
     var option = {
@@ -250,7 +325,10 @@ function graph_bar2(dom, axis, legend, series, title) {
         title: {
             text: title,
             x: 'left',
-            top: '0'
+            top: '0',
+            textStyle: {
+                fontSize: 14
+            }
         },
         tooltip: {
             trigger: 'axis'

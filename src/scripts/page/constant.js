@@ -337,6 +337,9 @@ export var Constant = {
         // error stat: 第二个柱状图点击出现的 第三个柱状图
         monitor_error_stat_error_code_oneday: host + "error_code_oneday_history_log?mod={mod}",
 
+        // error stat: 第三个柱状图点击出现的 第四个柱状图
+        monitor_error_stat_error_host_oneday: host + "error_code_host_oneday_history_log?code={code}",
+
         // log search: 表格  // &day={date}&timestart={start}&timeend={end}
         // streamid={id}&hostname={host}&mod={mod}&code={code}&type={type}
         monitor_log_search: host + "log_search?mod={mod}&start_time={start}&end_time={end}",
