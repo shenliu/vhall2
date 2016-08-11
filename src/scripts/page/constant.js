@@ -249,6 +249,7 @@ export var Constant = {
         '164004': '调用web接口获取活动转码信息失败',
         '164005': '获取转码参数错误',
         '164006': '转码程序异常',
+        '164020': '任务分配错误',
 
         '202000': 'relay server服务心跳',
         '202001': 'task manager服务心跳',
@@ -331,7 +332,10 @@ export var Constant = {
         monitor_error_stat_oneday: host + "error_count_oneday",
 
         // error stat: 第二个柱状图
-        monitor_error_stat_oneday_log: host + "error_mod_oneday_history_log",
+        monitor_error_stat_error_mod_oneday: host + "error_mod_oneday_history_log",
+
+        // error stat: 第二个柱状图点击出现的 第三个柱状图
+        monitor_error_stat_error_code_oneday: host + "error_code_oneday_history_log?mod={mod}",
 
         // log search: 表格  // &day={date}&timestart={start}&timeend={end}
         // streamid={id}&hostname={host}&mod={mod}&code={code}&type={type}

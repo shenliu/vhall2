@@ -299,21 +299,13 @@ export var Tool = {
 
     },
 
-    getMessage: function(key) {
-        return Constant.message[key];
-    },
+    getMessage: (key) => Constant.message[key],
 
-    getMessages: function() {
-        return Constant.message;
-    },
+    getMessages: () =>Constant.message,
 
-    getModule: function(key) {
-        return Constant.modules[key];
-    },
+    getModule: (key) => Constant.modules[key],
 
-    getModules: function() {
-        return Constant.modules;
-    },
+    getModules: () => Constant.modules,
 
     stripHTML: stripHTML,
 
@@ -324,18 +316,20 @@ export var Tool = {
     dateFormat: dateFormat,
 
     base64: {
-        encode: function (value) {
-            return base64encode(utf16to8(value))
-        },
-
-        decode: function (value) {
-            return utf8to16(base64decode(value));
-        }
+        encode: (value) => base64encode(utf16to8(value)),
+        decode: (value) => utf8to16(base64decode(value))
     },
 
     dropdown: dropdown,
 
-    playStream: function(domain, id) {
-        playStream(domain, id);
+    playStream: (domain, id) => playStream(domain, id),
+
+    // 根据对象的值 找到对应的键值
+    getKey: function(obj, val) {
+        for (var key of Object.keys(obj)) {
+            if (obj[key] === val) {
+                return key;
+            }
+        }
     }
 };

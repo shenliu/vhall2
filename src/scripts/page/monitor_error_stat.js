@@ -73,7 +73,7 @@ function monitor_error_overview() {
             return Tool.getModule(this);
         });
 
-        monitor_error_overview_graph(dom, times, mods, series, null);
+        graph_bar(dom, times, mods, series, null);
 
     }, null);
 }
@@ -86,7 +86,7 @@ function monitor_error_oneday_log() {
     let datas = {}; // 数据
     let mods = []; // 模块
 
-    Tool.xhr_get(Constant.url.monitor_error_stat_oneday_log, function (data, textStatus, jqXHR) {
+    Tool.xhr_get(Constant.url.monitor_error_stat_error_mod_oneday, function (data, textStatus, jqXHR) {
         $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"2": { "24101": 5, "24303": 2 }, ...}
             if (!("timestamp" in elem)) {
                 return true;
@@ -129,16 +129,81 @@ function monitor_error_oneday_log() {
         let legend = _.map(_.keys(datas), function (i) {
             return Tool.getModule(i);
         });
-        let dom = $(".vh-error-stat-oneday-log")[0];
+        let dom = $(".vh-error-stat-error-mod-oneday")[0];
 
-        monitor_error_overview_graph(dom, times, legend, series);
+        graph_bar(dom, times, legend, series, monitor_error_oneday_log_event);
     }, null);
+}
+
+/**
+ * 点击第二个柱状图 事件 - 第三个柱状图
+ * @param myChart
+ */
+function monitor_error_oneday_log_event(myChart) {
+    myChart.on("click", function (params) {
+        var seriesName = params.seriesName;
+        var mod = Tool.getKey(Tool.getModules(), seriesName);
+
+        if (!mod) {
+            return;
+        }
+
+        let times = []; // x轴 时间
+        let datas = {}; // 数据
+        let codes = []; // 错误代码
+
+        let url = Constant.url.monitor_error_stat_error_code_oneday.replace("{mod}", mod);
+        Tool.xhr_get(url, function (data, textStatus, jqXHR) {
+            $(data).each(function (idx, elem) { // idx: 0,1,2... elem: { "24101": 5, "24303": 2 }
+                if (!("timestamp" in elem)) {
+                    return true;
+                }
+                times.push(elem["timestamp"]);
+                delete elem["timestamp"]; // 删除timestamp属性
+
+                for (var k in elem) {
+                    if (_.indexOf(codes, k) === -1) {
+                        codes.push(k);
+                    }
+                }
+            });
+
+            $(data).each(function (idx, elem) { // idx: 0,1,2... elem: { "24101": 5, "24303": 2 }
+                if ($.isEmptyObject(elem)) {
+                    return true;
+                }
+                $(codes).each(function(i, code) {
+                    var n = elem[code] || 0;
+                    if (!(code in datas)) {
+                        datas[code] = [];
+                    }
+                    datas[code].push(n);
+                });
+            });
+
+            let series = [];
+            $.each(datas, function (k, v) {
+                series.push({
+                    name: k + " " + Tool.getMessage(k),
+                    type: "bar",
+                    stack: '总量',
+                    data: v
+                });
+            });
+            let legend = _.map(_.keys(datas), function (i) {
+                return i + " " + Tool.getMessage(i);
+            });
+            let dom = $(".vh-error-stat-error-code-oneday")[0];
+
+            graph_bar2(dom, times, legend, series, seriesName);
+        }, null);
+    });
 }
 
 /**
  *  柱状图 总览图
  */
-function monitor_error_overview_graph(dom, axis, legend, series, doEvent) {
+function graph_bar(dom, axis, legend, series, doEvent) {
     var myChart = E.init(dom);
 
     var option = {
@@ -153,6 +218,53 @@ function monitor_error_overview_graph(dom, axis, legend, series, doEvent) {
             left: '20',
             right: '40',
             bottom: '50',
+            containLabel: true
+        }],
+        xAxis: [{
+            type: 'category',
+            boundaryGap: true,
+            axisLine: {onZero: true},
+            name: "时间",
+            axisLabel: {
+                rotate: -15
+            },
+            data: axis
+        }],
+        yAxis: [{
+            name: '个数',
+            type: 'value'
+        }],
+        series: series
+    };
+
+    myChart.setOption(option);
+
+    doEvent && doEvent(myChart);
+}
+
+function graph_bar2(dom, axis, legend, series, title) {
+    var myChart = E.init(dom);
+
+    var option = {
+        backgroundColor: '#fffaf3',
+        title: {
+            text: title,
+            x: 'left',
+            top: '0'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: legend,
+            top: '20',
+            x: "right"
+        },
+        grid: [{
+            left: '20',
+            right: '40',
+            bottom: '50',
+            top: '80',
             containLabel: true
         }],
         xAxis: [{
@@ -219,7 +331,7 @@ function monitor_error_oneday() {
                     instance.dispose();
                 }
                 $(dom).prev("h5").html($(dom).prev("h5").html() + " (" + sum + ")"); // 统计各个总数
-                monitor_error_modules_graph(dom, legend, series);
+                graph_pie(dom, legend, series);
             }
 
         });
@@ -233,7 +345,7 @@ function monitor_error_oneday() {
  * @param legend
  * @param series
  */
-function monitor_error_modules_graph(dom, legend, series) {
+function graph_pie(dom, legend, series) {
     var myChart = E.init(dom);
 
     var option = {
@@ -252,7 +364,6 @@ function monitor_error_modules_graph(dom, legend, series) {
 
     //monitor_error_modules_event(myChart);
 }
-
 
 // ---------------------------------------------------------------------------- //
 
@@ -300,11 +411,10 @@ function monitor_error_overview_bak2() {
 
         var dom = $(".vh-error-stat-overview")[0];
 
-        monitor_error_overview_graph(dom, times, host, series, null);
+        graph_bar(dom, times, host, series, null);
 
     }, null);
 }
-
 
 /**
  *  第一个柱状图 总览图 组织数据
@@ -341,12 +451,10 @@ function monitor_error_overview_bak() {
         var dom = $(".vh-error-stat-overview")[0];
         var axis = _.keys(errorStatData);
 
-        monitor_error_overview_graph(dom, axis, legend, series, null);
+        graph_bar(dom, axis, legend, series, null);
     }, null);
 
 }
-
-
 
 /**
  * 饼状图点击事件
@@ -425,7 +533,7 @@ function monitor_error_modules_event(myChart) {
 
             curModule = _.invert(Tool.getModules())[module]; // 当前的模块id
             curCode = code;
-            monitor_error_overview_graph(dom, times, legend, series, monitor_error_host_event);
+            //graph_bar(dom, times, legend, series, monitor_error_host_event);
             dom.scrollIntoView();
         }, null);
     });
