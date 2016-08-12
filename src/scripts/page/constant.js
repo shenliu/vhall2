@@ -332,13 +332,13 @@ export var Constant = {
         monitor_error_stat_oneday: host + "error_count_oneday",
 
         // error stat: 第二个柱状图
-        monitor_error_stat_error_mod_oneday: host + "error_mod_oneday_history_log",
+        monitor_error_stat_one_hour: host + "error_mod_oneday_history_log",
 
         // error stat: 第二个柱状图点击出现的 第三个柱状图
-        monitor_error_stat_error_code_oneday: host + "error_code_oneday_history_log?mod={mod}",
+        monitor_error_stat_error_mod: host + "error_code_oneday_history_log?mod={mod}",
 
         // error stat: 第三个柱状图点击出现的 第四个柱状图
-        monitor_error_stat_error_host_oneday: host + "error_code_host_oneday_history_log?code={code}",
+        monitor_error_stat_error_host: host + "error_code_host_oneday_history_log?code={code}",
 
         // log search: 表格  // &day={date}&timestart={start}&timeend={end}
         // streamid={id}&hostname={host}&mod={mod}&code={code}&type={type}
