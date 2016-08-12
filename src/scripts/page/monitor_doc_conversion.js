@@ -41,7 +41,7 @@ function monitor_doc_conversion_table() {
                 "url": url,
                 "dataSrc": ""
             }
-            , "order": [[7, "desc"]]
+            , "order": [[5, "desc"]]
             , "columns": [{
                 // ID idx: 0
                 data: "streamid"
@@ -72,7 +72,17 @@ function monitor_doc_conversion_table() {
                     }
                 }
             }, {
-                // 232011 转换任务开始 idx: 5
+                // 234001 接收任务失败 idx: 5
+                data: "code",
+                render: function (data, type, row, meta) {
+                    if (data == "234001") {
+                        return _html(row, table, meta);
+                    } else {
+                        return "-";
+                    }
+                }
+            }, {
+                // 232011 转换任务开始 idx: 6
                 data: "code",
                 render: function (data, type, row, meta) {
                     if (data == "232011") {
@@ -82,20 +92,10 @@ function monitor_doc_conversion_table() {
                     }
                 }
             }, {
-                // 232002 转换任务完成 idx: 6
+                // 232002 转换任务完成 idx: 7
                 data: "code",
                 render: function (data, type, row, meta) {
                     if (data == "232002") {
-                        return _html(row, table, meta);
-                    } else {
-                        return "-";
-                    }
-                }
-            }, {
-                // 234001 接收任务失败 idx: 7
-                data: "code",
-                render: function (data, type, row, meta) {
-                    if (data == "234001") {
                         return _html(row, table, meta);
                     } else {
                         return "-";
