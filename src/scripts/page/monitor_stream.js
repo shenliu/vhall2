@@ -886,9 +886,17 @@ function _genCollect(data, type, k) {
         });
 
         if (total === 0 && k == 6) { // 还为0 手动添加链接地址
-            arr.push({
-                "cnrtmplive01.open.vhall.com": "-"
-            });
+            let o;
+            if (streamID.length > 9 && streamID.indexOf("_") === -1) {
+                o = {
+                    "cnrtmplive01.open.vhall.com": "-" // open平台
+                }
+            } else {
+                o = {
+                    "cnrtmplive01.e.vhall.com": "-" //
+                }
+            }
+            arr.push(o);
         }
 
         return templateCollect({
