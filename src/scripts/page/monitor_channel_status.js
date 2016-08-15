@@ -14,6 +14,8 @@ import * as _ from 'lodash';
 
 let E = require("echarts/dist/echarts.min");
 
+//require("../lib/china");
+
 import {Constant} from './constant';
 
 import {Tool} from './tool';
@@ -28,12 +30,47 @@ $(function () {
         return;
     }
     $("#vh-streamID").find("i").html(streamID);
+    Tool.xhr_get("./data/china.json", function (data, textStatus, jqXHR) {
+        E.registerMap('china', data);
+        channel_user_map();
+    }, null);
 
     channel_quality();
     channel_cdn();
     channel_error();
     channel_table();
 });
+
+// 用户地图
+function channel_user_map() {
+    let datas = [];
+    let max = 0,
+        sum = 0;
+
+    let url = Constant.url.monitor_channel_map.replace("{id}", streamID);
+    Tool.xhr_get(url, function (data, textStatus, jqXHR) {
+        $(data).each(function(key, val) { // key: 0,1,2  val: {"city_name": "上海", "latitude": 31.0456,"longitude": 121.3997, "user": 8}
+            if (!val["city_name"]) { // 可能为null
+                return true;
+            }
+            datas.push({
+                name: val["city_name"],
+                value: [
+                    val["longitude"],
+                    val["latitude"],
+                    val["user"]
+                ]
+            });
+
+            if (max < val["user"]) {
+                max = val["user"];
+            }
+            sum += val["user"];
+        });
+        let dom = $("#vh-channel-user-map")[0];
+        _graph_map(dom, sum, max, datas);
+    }, null);
+}
 
 // 发起观看质量分时图
 function channel_quality() {
@@ -319,11 +356,11 @@ function channel_table_event() {
  * @private
  */
 function _genList(data, k) {
-    var arr = [];
+    let arr = [];
     $(data).each(function(idx, obj) { // idx: 0,1,2... obj: {"122004": {...}}
-        var o = {};
-        var key = _.keys(obj)[0];
-        var val = obj[key];
+        let o = {};
+        let key = _.keys(obj)[0];
+        let val = obj[key];
         o["bg"] = Constant.level[val["type"]];
         o["code"] = key;
         o["desc"] = Tool.getMessage(key);
@@ -339,11 +376,10 @@ function _genList(data, k) {
     });
 }
 
-
 function _graph_bar(dom, axis, legend, series) {
-    var myChart = E.init(dom);
+    let myChart = E.init(dom);
 
-    var option = {
+    let option = {
         tooltip: {
             trigger: 'axis'
         },
@@ -412,6 +448,131 @@ function _graph_line(dom, axis, legend, series) {
             type : 'value'
         }],
         series: series
+    };
+
+    myChart.setOption(option);
+}
+
+function _graph_map(dom, sum, max, data) {
+    let myChart = E.init(dom);
+    let labelColor = "#ddb926";
+
+    let option = {
+        backgroundColor: '#fffaf3',
+        color: [labelColor],
+        title: {
+            text: '共有用户' + sum + "名",
+            textStyle: {
+                fontSize: 14
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: function (params) {
+                return params.name + ' : ' + params.value[2] + "名";
+            }
+        },
+        legend: {
+            orient: 'vertical',
+            y: 'bottom',
+            x:'right',
+            data:['用户数量'],
+            textStyle: {
+                color: '#333'
+            }
+        },
+        visualMap: {
+            min: 0,
+            max: max,
+            calculable: true,
+            inRange: {
+                color: [labelColor]
+            },
+            textStyle: {
+                color: '#333'
+            }
+        },
+        geo: {
+            map: 'china',
+            roam: true,
+            label: {
+                normal: {
+                    show: false,
+                    textStyle: {
+                        color: "#aaa"
+                    }
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        color: "#eee"
+                    }
+                }
+            },
+            itemStyle: {
+                normal: {
+                    areaColor: '#323c48',
+                    borderColor: '#ddd'
+                },
+                emphasis: {
+                    areaColor: '#2a333d'
+                }
+            }
+        },
+        series: [{
+            name: '用户数量',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: data,
+            symbolSize: 12,
+            //symbol: "pin",
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                emphasis: {
+                    borderColor: '#666',
+                    borderWidth: 1
+                }
+            }
+        }/*, {
+            name: 'Top 5',
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            data: data.sort(function (a, b) {
+                return b.value - a.value;
+            }).slice(0, 6),
+            symbolSize: function (val) {
+                return val[2] / 10;
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+                brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: true
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: '#f4e925',
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            zlevel: 1
+        }*/]
     };
 
     myChart.setOption(option);

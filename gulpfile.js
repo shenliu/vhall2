@@ -22,6 +22,7 @@ gulp.task('todo', function() {
     var path = debug ? './dev/' : './dist/';
     // 拷贝player目录到dev
     gulp.src('./player/**/*').pipe(gulp.dest(path + 'player/'));
+    gulp.src('./src/data/**/*').pipe(gulp.dest(path + 'data/'));
     // 拷贝images目录到dev
     gulp.src(['./src/images/**/*', '!./src/images/*.ico']).pipe(gulp.dest(path + 'images/'));
 });

@@ -310,6 +310,8 @@ export var Constant = {
         // stream: table数据
         monitor_stream: host + "stream_real_status",
 
+        //------------------
+
         // channel status: table
         monitor_channel_mod_history: host + "stream_mod_history_log?streamid={id}",
 
@@ -324,6 +326,11 @@ export var Constant = {
 
         // channel status: CDN质量分时图
         monitor_channel_cdn: host + "stream_cdn_quality_history?streamid={id}",
+
+        // channel status: 用户地理信息图
+        monitor_channel_map: host + "stream_user_location?streamid={id}",
+
+        //------------------
 
         // error stat: 第一个柱状图
         monitor_error_stat_overview: host + "error_count_history",
@@ -340,9 +347,13 @@ export var Constant = {
         // error stat: 第三个柱状图点击出现的 第四个柱状图
         monitor_error_stat_error_host: host + "error_code_host_oneday_history_log?code={code}",
 
+        //------------------
+
         // log search: 表格  // &day={date}&timestart={start}&timeend={end}
         // streamid={id}&hostname={host}&mod={mod}&code={code}&type={type}
         monitor_log_search: host + "log_search?mod={mod}&start_time={start}&end_time={end}",
+
+        //------------------
 
         // log search: 所有 流ID 主机名 模块 错误代码
         monitor_get_streams: host + "get_streamid",
