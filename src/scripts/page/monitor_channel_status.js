@@ -35,10 +35,10 @@ $(function () {
         channel_user_map();
     }, null);
 
-    //channel_quality();
-    //channel_cdn();
-    //channel_error();
-    //channel_table();
+    channel_quality();
+    channel_cdn();
+    channel_error();
+    channel_table();
 });
 
 // 用户地图
