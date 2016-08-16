@@ -458,12 +458,13 @@ function _graph_map(dom, sum, max, data) {
     let labelColor = "#b71419";
 
     let option = {
-        backgroundColor: '#fffaf3',
+        backgroundColor: '#404a59',
         color: [labelColor],
         title: {
             text: '共有用户' + sum + "名",
             textStyle: {
-                fontSize: 14
+                fontSize: 14,
+                color: "#eee"
             }
         },
         tooltip: {
@@ -478,7 +479,7 @@ function _graph_map(dom, sum, max, data) {
             x:'right',
             data:['用户数量'],
             textStyle: {
-                color: '#333'
+                color: '#eee'
             }
         },
         visualMap: {
@@ -487,7 +488,7 @@ function _graph_map(dom, sum, max, data) {
             calculable: true,
             text:['高', '低'],
             textStyle: {
-                color: '#333'
+                color: '#eee'
             }
         },
         geo: {
@@ -509,11 +510,11 @@ function _graph_map(dom, sum, max, data) {
             },
             itemStyle: {
                 normal: {
-                    areaColor: '#b7c29a',
+                    areaColor: '#323c48',
                     borderColor: '#999'
                 },
                 emphasis: {
-                    areaColor: '#5d7539'
+                    areaColor: '#2a333d'
                 }
             }
         },
@@ -552,7 +553,7 @@ function _graph_map(dom, sum, max, data) {
             coordinateSystem: 'geo',
             data: data.sort(function (a, b) {
                 return b["value"][2] - a["value"][2];
-            }).slice(0, 6),
+            }).slice(0, 5),
             symbolSize: function (val) {
                 return Math.max(Math.min(val[2] / 10, 16), 4);
             },
