@@ -35,10 +35,10 @@ $(function () {
         channel_user_map();
     }, null);
 
-    channel_quality();
-    channel_cdn();
-    channel_error();
-    channel_table();
+    //channel_quality();
+    //channel_cdn();
+    //channel_error();
+    //channel_table();
 });
 
 // 用户地图
@@ -455,7 +455,7 @@ function _graph_line(dom, axis, legend, series) {
 
 function _graph_map(dom, sum, max, data) {
     let myChart = E.init(dom);
-    let labelColor = "#ddb926";
+    let labelColor = "#b71419";
 
     let option = {
         backgroundColor: '#fffaf3',
@@ -485,9 +485,7 @@ function _graph_map(dom, sum, max, data) {
             min: 0,
             max: max,
             calculable: true,
-            inRange: {
-                color: [labelColor]
-            },
+            text:['高', '低'],
             textStyle: {
                 color: '#333'
             }
@@ -511,11 +509,11 @@ function _graph_map(dom, sum, max, data) {
             },
             itemStyle: {
                 normal: {
-                    areaColor: '#323c48',
-                    borderColor: '#ddd'
+                    areaColor: '#b7c29a',
+                    borderColor: '#999'
                 },
                 emphasis: {
-                    areaColor: '#2a333d'
+                    areaColor: '#5d7539'
                 }
             }
         },
@@ -524,7 +522,9 @@ function _graph_map(dom, sum, max, data) {
             type: 'scatter',
             coordinateSystem: 'geo',
             data: data,
-            symbolSize: 12,
+            symbolSize: function (val) {
+                return Math.max(Math.min(val[2] / 10, 16), 4); // 5 - 14
+            },
             //symbol: "pin",
             label: {
                 normal: {
@@ -542,15 +542,19 @@ function _graph_map(dom, sum, max, data) {
                     borderWidth: 1
                 }
             }
-        }/*, {
+        }]
+    };
+
+    if (data.length > 100) {
+        option["series"].push({
             name: 'Top 5',
             type: 'effectScatter',
             coordinateSystem: 'geo',
             data: data.sort(function (a, b) {
-                return b.value - a.value;
+                return b["value"][2] - a["value"][2];
             }).slice(0, 6),
             symbolSize: function (val) {
-                return val[2] / 10;
+                return Math.max(Math.min(val[2] / 10, 16), 4);
             },
             showEffectOn: 'render',
             rippleEffect: {
@@ -572,8 +576,8 @@ function _graph_map(dom, sum, max, data) {
                 }
             },
             zlevel: 1
-        }*/]
-    };
+        });
+    }
 
     myChart.setOption(option);
 }
