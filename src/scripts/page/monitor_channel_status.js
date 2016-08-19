@@ -405,6 +405,7 @@ function _graph_bar(dom, axis, legend, series) {
         }],
         yAxis: [{
             name: '个数',
+            minInterval: 1,
             type: 'value'
         }],
         series: series

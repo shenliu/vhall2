@@ -6,11 +6,12 @@
 
 require("semantic/semantic.min.css");
 require("../../css/lib/jquery.dataTables.min.css");
-require("../../css/lib/mobiscroll.custom-3.0.0.min.css");
+require("../../css/lib/datetimepicker.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
 
-require('../../scripts/lib/mobiscroll.custom-3.0.0.min');
+require('../../scripts/lib/bootstrap-datetimepicker.min');
+require('../../scripts/lib/bootstrap-datetimepicker.zh-CN');
 
 import {Constant} from './constant';
 
@@ -41,7 +42,7 @@ function _init(callback) {
         $('.ui.dropdown')
             .dropdown({
                 allowAdditions: true,
-                forceSelection: false
+                forceSelection: true
             });
 
         // 流ID
@@ -76,37 +77,42 @@ function _init(callback) {
         /*var now = new Date(),
             until = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
 
-        $('#vh-date').mobiscroll().date({
-            theme: 'material',
-            lang: 'zh',
-            display: 'bottom',
-            dateWheels: 'yymmdd',
-            dateFormat: 'yy/mm/dd',
-            min: until,
-            minWidth: 100,
-            max: now
-        }).val(Tool.dateFormat(now, "yyyy/MM/dd"));
+        $('#vh-date');
 
-        $('#vh-date').mobiscroll('getInst').setVal(now);*/
+        $('#vh-date');*/
 
         // 时间
         var now = new Date(),
             hour = now.getHours();
-        $('#vh-time-start').mobiscroll().time({
-            theme: 'material',
-            lang: 'zh',
-            display: 'bottom',
-            timeFormat: 'HH:ii:00',
-            timeWheels: 'HHii'
-        }).val(hour + ":00:00");
+        $('#vh-time-start').datetimepicker({
+            language: 'zh-CN',
+            format: 'hh:ii:00',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 1,
+            minView: 0,
+            maxView: 1,
+            forceParse: 0
+        }).val(hour + ':00:00');
 
-        $('#vh-time-end').mobiscroll().time({
-            theme: 'material',
-            lang: 'zh',
-            display: 'bottom',
-            timeFormat: 'HH:ii:59',
-            timeWheels: 'HHii'
-        }).val((hour + 1) + ":00:00");
+        var nextHour = hour + 1;
+        if (nextHour === 24) {
+            nextHour = "00";
+        }
+        $('#vh-time-end').datetimepicker({
+            language: 'zh-CN',
+            format: 'hh:ii:00',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 1,
+            minView: 0,
+            maxView: 1,
+            forceParse: 0
+        }).val(nextHour + ':00:00');
 
         callback && callback();
     });
