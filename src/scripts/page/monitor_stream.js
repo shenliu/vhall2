@@ -51,7 +51,7 @@ function monitor_table() {
                 return data;
             }
         }
-        ,"order": [[ 16, "desc" ]]
+        ,"order": [[ 15, "desc" ]]
         ,"columns": [{
             // 流ID idx: 0
             data: "streamid",
@@ -149,7 +149,7 @@ function monitor_table() {
                 } else
                     return "-";
             }
-        }, {
+        }, /*{
             // HLS同步 idx: 9
             orderDataType: "dom-error-number",
             type: "numeric",
@@ -160,8 +160,8 @@ function monitor_table() {
                 } else
                     return "-";
             }
-        }, {
-            // HLS回放 idx: 10
+        },*/ {
+            // HLS回放 idx: 9
             orderDataType: "dom-error-number",
             type: "numeric",
             data: "14",
@@ -172,7 +172,7 @@ function monitor_table() {
                     return "-";
             }
         }, {
-            // 移动 idx: 11
+            // 移动 idx: 10
             orderDataType: "dom-collect-number",
             type: "numeric",
             data: "6",
@@ -183,7 +183,7 @@ function monitor_table() {
                     return "-";
             }
         }, {
-            // 移动用户 idx: 12
+            // 移动用户 idx: 11
             orderDataType: "dom-collect-number",
             type: "numeric",
             data: "user.cdn.6",
@@ -194,7 +194,7 @@ function monitor_table() {
                     return "-";
             }
         }, {
-            // Flash idx: 13
+            // Flash idx: 12
             orderDataType: "dom-collect-number",
             type: "numeric",
             data: "7",
@@ -205,7 +205,7 @@ function monitor_table() {
                     return "-";
             }
         }, {
-            // Flash用户 idx: 14
+            // Flash用户 idx: 13
             orderDataType: "dom-collect-number",
             type: "numeric",
             data: "user.cdn.7",
@@ -216,7 +216,7 @@ function monitor_table() {
                     return "-";
             }
         }, {
-            // 卡顿用户数 idx: 15
+            // 卡顿用户数 idx: 14
             orderDataType: "dom-user-number",
             type: "numeric",
             data: "user.baduser",
@@ -225,7 +225,7 @@ function monitor_table() {
                 return dom.join("");
             }
         }, {
-            // 用户总数 idx: 16
+            // 用户总数 idx: 15
             orderDataType: "dom-user-number",
             type: "numeric",
             data: "user.alluser",
@@ -1043,8 +1043,8 @@ function _filter(table, isMultiple) {
                 case 6: // SRS分发
                 case 7: // 多码流转码
                 case 8: // HLS切片
-                case 9: // HLS同步
-                case 10: // HLS回放
+                //case 9: // HLS同步
+                case 9: // HLS回放
                     if (dimension === "number") {
                         switch(oper) {
                             case 1: // <=
@@ -1085,8 +1085,8 @@ function _filter(table, isMultiple) {
                     }
                     break;
 
-                case 15: // 卡顿用户数
-                case 16: // 用户总数
+                case 14: // 卡顿用户数
+                case 15: // 用户总数
                     if (dimension === "number") {
                         switch(oper) {
                             case 1: // <=
