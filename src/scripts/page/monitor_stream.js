@@ -469,7 +469,7 @@ function monitor_table_event_show_stream() {
     $(table.column(1).nodes()).on("dblclick", function(e) {
         var td = $(e.currentTarget);
         var tr = td.parent("tr");
-        td = tr.find("td").eq(12);
+        td = tr.find("td").eq(11);
         td.find(".item").trigger("click");
     });
 
