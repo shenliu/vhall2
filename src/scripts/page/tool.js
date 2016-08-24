@@ -333,5 +333,38 @@ export var Tool = {
                 return key;
             }
         }
+    },
+
+    /**
+     * 显示loading
+     * @param dom   在dom上显示
+     */
+    loading: {
+        begin: function(_dom) {
+            var dom = $(_dom);
+            var html = ['<div class="loader">'];
+            html.push('<div class="loading">');
+            html.push('<div class="dot"></div>');
+            html.push('<div class="dot"></div>');
+            html.push('<div class="dot"></div>');
+            html.push('<div class="dot"></div>');
+            html.push('<div class="dot"></div>');
+            html.push('</div>');
+            html.push('</div>');
+            var div = $("<div class='mask'></div>").css({
+                "width": dom.width() + "px",
+                "height": dom.height() + "px"
+            }).html(html.join("")).appendTo(dom);
+
+            dom.css("position", "relative");
+
+            div.find(".loader").css({
+                "marginTop": (dom.height() - 64) / 2 + "px"
+            });
+        },
+
+        end: function(dom) {
+            $(dom).remove(".mask");
+        }
     }
 };

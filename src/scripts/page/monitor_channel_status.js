@@ -7,6 +7,7 @@
 require("semantic/semantic.min.css");
 require("../../css/lib/jquery.dataTables.min.css");
 require("../../css/common/common.less");
+require("../../css/common/loading.less");
 require("../../css/page/monitor.less");
 require("../../css/page/channel_status.less");
 
@@ -30,6 +31,12 @@ $(function () {
         return;
     }
     $("#vh-streamID").find("i").html(streamID);
+
+    Tool.loading.begin("#vh-channel-user-map");
+    Tool.loading.begin("#vh-channel-quality");
+    Tool.loading.begin("#vh-channel-cdn");
+    Tool.loading.begin("#vh-channel-error");
+
     Tool.xhr_get("./data/china.json", function (data, textStatus, jqXHR) {
         E.registerMap('china', data);
         channel_user_map();
@@ -68,6 +75,8 @@ function channel_user_map() {
             sum += val["user"];
         });
         let dom = $("#vh-channel-user-map")[0];
+
+        Tool.loading.end("#vh-channel-user-map");
         _graph_map(dom, sum, max, datas);
     }, null);
 }
@@ -107,6 +116,7 @@ function channel_quality() {
         });
         let dom = $("#vh-channel-quality")[0];
 
+        Tool.loading.end("#vh-channel-quality");
         _graph_bar(dom, times, legend, series);
     }, null);
 }
@@ -162,6 +172,7 @@ function channel_cdn() {
 
         let dom = $("#vh-channel-cdn")[0];
 
+        Tool.loading.end("#vh-channel-cdn");
         _graph_line(dom, times, cdns, series);
     }, null);
 }
@@ -201,6 +212,7 @@ function channel_error() {
         });
         let dom = $("#vh-channel-error")[0];
 
+        Tool.loading.end("#vh-channel-error");
         _graph_bar(dom, times, legend, series);
     }, null);
 }
@@ -629,7 +641,8 @@ function _graph_map(dom, sum, max, data) {
             },
             xAxis: {
                 type: 'value',
-                scale: true,
+                //scale: true,
+                min: 0,
                 position: 'top',
                 boundaryGap: false,
                 minInterval: 1,

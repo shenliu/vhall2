@@ -3,6 +3,7 @@
 require("semantic/semantic.min.css");
 require("../../css/common/common.less");
 require("../../css/page/monitor.less");
+require("../../css/common/loading.less");
 require("../../css/page/error_stat.less");
 
 import * as _ from 'lodash';
@@ -51,6 +52,7 @@ function _event_one_hour(myChart, params) {
         }
 
         let url = Constant.url.monitor_error_stat_error_mod.replace("{mod}", mod);
+        Tool.loading.begin(".vh-error-stat-error-mod");
         _monitor_error(url, Tool.getFullMessage, {
             cur: ".vh-error-stat-error-mod",
             another: ".vh-error-stat-error-code" // 销毁第四个
@@ -71,7 +73,7 @@ function _event_mod(myChart, params) {
     myChart.on("click", function (arg) {
         var codeName = arg.seriesName;
         let url = Constant.url.monitor_error_stat_error_host.replace("{code}", codeName.split(" ")[0]);
-
+        Tool.loading.begin(".vh-error-stat-error-code");
         _monitor_error(url, null, {
             cur: ".vh-error-stat-error-code"
         }, codeName, {backgroundColor: '#fffaf3'});
@@ -234,7 +236,7 @@ function _monitor_error(url, _T, domClass, title, graph, callbackObj) {
                 _dom.parent("div").prev("h3").html("");
             }
         }
-
+        Tool.loading.end(domClass.cur); // end loading
         _graph(dom[0], times, legend, series, graph, callbackObj);
     }, null);
 }
