@@ -118,9 +118,10 @@ function monitor_doc_conversion_table() {
 }
 
 function _html(row, table, meta) {
+    var s = row["attr"].slice(1, -1);
     var html = ["<ul>"];
-    $.each(row["attr"], function (k, v) {
-        html.push('<li>', k, ": ", v, '</li>');
+    $.each(s.split(","), function (idx, elem) {
+        html.push('<li>', elem, '</li>');
     });
     var tr = table.row(meta.row).node();
     row["type"] == 4 && $(tr).addClass("danger-bg");
