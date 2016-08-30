@@ -125,13 +125,14 @@ function monitor_doc_conversion_table() {
 }
 
 function _html(code, row, table, meta) {
-    var s = row[code]["attr"].slice(1, -1);
-    var html = ["<ul>"];
+    var o = row[code];
+    var s = o["attr"].slice(1, -1);
+    var html = o["type"] == "4" ? ["<ul class='danger'>"] : ["<ul>"];
     $.each(s.split(","), function (idx, elem) {
         html.push('<li>', elem, '</li>');
     });
-    var tr = table.row(meta.row).node();
-    row[code]["type"] == 4 && $(tr).addClass("danger-bg");
+    //var tr = table.row(meta.row).node();
+    //row[code]["type"] == 4 && $(tr).addClass("danger-bg");
     html.push("</ul>");
     return html.join("");
 }
