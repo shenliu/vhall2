@@ -48,7 +48,7 @@ function monitor_doc_conversion_table() {
                     return arr;
                 }
             }
-            , "order": [[5, "desc"]]
+            , "order": [[2, "desc"]]
             , "columns": [{
                 // ID idx: 0
                 data: "streamid"
