@@ -39,7 +39,14 @@ function monitor_doc_conversion_table() {
             , "lengthMenu": [[25, 50, 75, 100, -1], [25, 50, 75, 100, '全部']]
             , "ajax": {
                 "url": url,
-                "dataSrc": ""
+                "dataSrc": function(data) {
+                    var arr = [];
+                    $.each(data, function(k, v) {
+                        v["sessionID"] = k;
+                        arr.push(v);
+                    });
+                    return arr;
+                }
             }
             , "order": [[5, "desc"]]
             , "columns": [{
@@ -50,63 +57,63 @@ function monitor_doc_conversion_table() {
                 data: "hostname"
             }, {
                 // session ID idx: 2
-                data: "log_session"
+                data: "sessionID"
             }, {
                 // 232101 转换服务启动 idx: 3
-                data: "code",
+                data: "232101",
                 render: function (data, type, row, meta) {
-                    if (data == "232101") {
-                        return _html(row, table, meta);
+                    if (data) {
+                        return _html("232101", row, table, meta);
                     } else {
                         return "-";
                     }
                 }
             }, {
                 // 232001 成功收到任务 idx: 4
-                data: "code",
+                data: "232001",
                 render: function (data, type, row, meta) {
-                    if (data == "232001") {
-                        return _html(row, table, meta);
+                    if (data) {
+                        return _html("232001", row, table, meta);
                     } else {
                         return "-";
                     }
                 }
             }, {
                 // 234001 接收任务失败 idx: 5
-                data: "code",
+                data: "234001",
                 render: function (data, type, row, meta) {
-                    if (data == "234001") {
-                        return _html(row, table, meta);
+                    if (data) {
+                        return _html("234001", row, table, meta);
                     } else {
                         return "-";
                     }
                 }
             }, {
                 // 232011 转换任务开始 idx: 6
-                data: "code",
+                data: "232011",
                 render: function (data, type, row, meta) {
-                    if (data == "232011") {
-                        return _html(row, table, meta);
+                    if (data) {
+                        return _html("232011", row, table, meta);
                     } else {
                         return "-";
                     }
                 }
             }, {
                 // 232002 转换任务完成 idx: 7
-                data: "code",
+                data: "232002",
                 render: function (data, type, row, meta) {
-                    if (data == "232002") {
-                        return _html(row, table, meta);
+                    if (data) {
+                        return _html("232002", row, table, meta);
                     } else {
                         return "-";
                     }
                 }
             }, {
                 // 234011 转换任务失败 idx: 8
-                data: "code",
+                data: "234011",
                 render: function (data, type, row, meta) {
-                    if (data == "234011") {
-                        return _html(row, table, meta);
+                    if (data) {
+                        return _html("234011", row, table, meta);
                     } else {
                         return "-";
                     }
@@ -117,14 +124,14 @@ function monitor_doc_conversion_table() {
 
 }
 
-function _html(row, table, meta) {
-    var s = row["attr"].slice(1, -1);
+function _html(code, row, table, meta) {
+    var s = row[code]["attr"].slice(1, -1);
     var html = ["<ul>"];
     $.each(s.split(","), function (idx, elem) {
         html.push('<li>', elem, '</li>');
     });
     var tr = table.row(meta.row).node();
-    row["type"] == 4 && $(tr).addClass("danger-bg");
+    row[code]["type"] == 4 && $(tr).addClass("danger-bg");
     html.push("</ul>");
     return html.join("");
 }
