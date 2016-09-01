@@ -35,6 +35,7 @@ $(function () {
     Tool.loading.begin("#vh-channel-user-map");
     Tool.loading.begin("#vh-channel-quality");
     Tool.loading.begin("#vh-channel-cdn");
+    Tool.loading.begin("#vh-channel-cdn-user");
     Tool.loading.begin("#vh-channel-error");
 
     Tool.xhr_get("./data/china.json", function (data, textStatus, jqXHR) {
@@ -121,10 +122,11 @@ function channel_quality() {
     }, null);
 }
 
-// CDN质量分时图
+// CDN质量分时图 CDN用户数分时图
 function channel_cdn() {
     let times = []; // x轴 时间
     let datas = {}; // 数据
+    let datas_user = {}; // 用户数量数据
     let cdns = []; // legend cdn名称
 
     let url = Constant.url.monitor_channel_cdn.replace("{id}", streamID);
@@ -149,31 +151,47 @@ function channel_cdn() {
         $(data).each(function (idx, elem) { // idx: 0,1,2... elem: {"cnrtmplive02.e.vhall.com": {"bad": 2, "good": 0}, ... }
             $(cdns).each(function(i, cdn) {
                 var o = elem[cdn];
-                var n;
+                var n, m;
                 if (o) { // 有这个cdn
                     n = parseFloat(((o["bad"] / (o["bad"] + o["good"])) * 100).toFixed(2));
+                    m = o["bad"] + o["good"];
                 }
                 if (!(cdn in datas)) {
                     datas[cdn] = [];
                 }
+                if (!(cdn in datas_user)) {
+                    datas_user[cdn] = [];
+                }
                 datas[cdn].push(n || 0);
+                datas_user[cdn].push(m || 0);
             });
         });
 
-        let series = [];
+        let series = [], series_user = [];
         $.each(datas, function (k, v) {
             series.push({
                 name: k,
                 type: "line",
-                //stack: '总量',
+                data: v
+            });
+        });
+
+        $.each(datas_user, function (k, v) {
+            series_user.push({
+                name: k,
+                type: "bar",
+                stack: '总量',
                 data: v
             });
         });
 
         let dom = $("#vh-channel-cdn")[0];
+        let dom_user = $("#vh-channel-cdn-user")[0];
 
         Tool.loading.end("#vh-channel-cdn");
+        Tool.loading.end("#vh-channel-cdn-user");
         _graph_line(dom, times, cdns, series);
+        _graph_bar(dom_user, times, cdns, series_user);
     }, null);
 }
 
