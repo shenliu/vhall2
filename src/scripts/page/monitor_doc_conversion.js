@@ -109,6 +109,16 @@ function monitor_doc_conversion_table() {
                     }
                 }
             }, {
+                // 转换时长(秒)
+                data: "234011",
+                render: function(data, type, row, meta) {
+                    if (data) { // 如果转换任务失败 就返回"-"
+                        return "-";
+                    } else {
+                        return _last(row, table, meta);
+                    }
+                }
+            }, {
                 // 234011 转换任务失败 idx: 8
                 data: "234011",
                 render: function (data, type, row, meta) {
@@ -135,4 +145,27 @@ function _html(code, row, table, meta) {
     //row[code]["type"] == 4 && $(tr).addClass("danger-bg");
     html.push("</ul>");
     return html.join("");
+}
+
+function _last(row, table, meta) {
+    // 转换任务开始
+    var str_start = row["232011"];
+
+    // 转换任务完成
+    var str_end = row["232002"];
+    if (!str_start || !str_end) {
+        return "-";
+    }
+
+    str_start = str_start["attr"];
+    str_end = str_end["attr"];
+
+    var reg = /"d":\s"(.*?)"/;
+    var m1 = reg.exec(str_start);
+    var m2 = reg.exec(str_end);
+    if (m1 && m2) {
+        return Tool.diffTime(m1[1], m2[1], "second");
+    } else {
+        return "-";
+    }
 }

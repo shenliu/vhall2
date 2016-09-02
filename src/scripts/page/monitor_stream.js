@@ -889,11 +889,11 @@ function _genCollect(data, type, k) {
             let o;
             if (streamID.length > 9 && streamID.indexOf("_") === -1) {
                 o = {
-                    "cnrtmplive01.open.vhall.com": "-" // open平台
+                    "cnrtmplive02.open.vhall.com": "-" // open平台
                 }
             } else {
                 o = {
-                    "cnrtmplive01.e.vhall.com": "-" //
+                    "cnrtmplive02.e.vhall.com": "-" //
                 }
             }
             arr.push(o);
