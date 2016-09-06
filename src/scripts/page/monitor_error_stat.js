@@ -52,13 +52,15 @@ function _event_one_hour(myChart, params) {
         }
 
         let url = Constant.url.monitor_error_stat_error_mod.replace("{mod}", mod);
-        Tool.loading.begin(".vh-error-stat-error-mod");
-        _monitor_error(url, Tool.getFullMessage, {
-            cur: ".vh-error-stat-error-mod",
-            another: ".vh-error-stat-error-code" // 销毁第四个
-        }, seriesName, {backgroundColor: '#fffaf3'}, {
-            callback: _event_mod,
-            params: null
+        $(".vh-error-stat-error-mod").parents(".one.column.row").show("slow", function() {
+            Tool.loading.begin(".vh-error-stat-error-mod");
+            _monitor_error(url, Tool.getFullMessage, {
+                cur: ".vh-error-stat-error-mod",
+                another: ".vh-error-stat-error-code" // 销毁第四个
+            }, seriesName, {backgroundColor: '#fffaf3'}, {
+                callback: _event_mod,
+                params: null
+            });
         });
 
     });
@@ -73,10 +75,12 @@ function _event_mod(myChart, params) {
     myChart.on("click", function (arg) {
         var codeName = arg.seriesName;
         let url = Constant.url.monitor_error_stat_error_host.replace("{code}", codeName.split(" ")[0]);
-        Tool.loading.begin(".vh-error-stat-error-code");
-        _monitor_error(url, null, {
-            cur: ".vh-error-stat-error-code"
-        }, codeName, {backgroundColor: '#fffaf3'});
+        $(".vh-error-stat-error-code").parents(".one.column.row").show("slow", function() {
+            Tool.loading.begin(".vh-error-stat-error-code");
+            _monitor_error(url, null, {
+                cur: ".vh-error-stat-error-code"
+            }, codeName, {backgroundColor: '#fffaf3'});
+        });
     });
 }
 

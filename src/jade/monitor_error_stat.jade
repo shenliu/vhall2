@@ -17,18 +17,18 @@ block content
 
         div.ui.vertically.divided.grid
             div.one.column.row
-                h3.ui.header.left.aligned 最近24小时错误数据
+                h3.ui.header.left.aligned 最近24小时错误数据(间隔1小时)
                 div.column
                     div.vh-error-stat-overview.vh-error-stat-graph
             div.one.column.row
-                h3.ui.header.left.aligned 最近1小时错误数据
+                h3.ui.header.left.aligned 今日错误数据(间隔10分钟)
                 div.column
                     div.vh-error-stat-error-one-hour.vh-error-stat-graph
-            div.one.column.row
+            div.one.column.row(style="display:none;")
                 h3.ui.header.left.aligned
                 div.column
                     div.vh-error-stat-error-mod.vh-error-stat-graph
-            div.one.column.row
+            div.one.column.row(style="display:none;")
                 h3.ui.header.left.aligned
                 div.column
                     div.vh-error-stat-error-code.vh-error-stat-graph
