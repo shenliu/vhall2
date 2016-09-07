@@ -214,7 +214,10 @@ function monitor_log_search_table(id, host, module, code, type, date, timeStart,
             , "lengthMenu": [[25, 50, 75, 100, -1], [25, 50, 75, 100, '全部']]
             , "ajax": {
                 "url": url,
-                "dataSrc": ""
+                "dataSrc": function (json) {
+                    console.log(json);
+                    return json;
+                }
             }
             , "order": [[4, "desc"]]
             , "columns": [{
@@ -315,6 +318,7 @@ function monitor_log_search_table(id, host, module, code, type, date, timeStart,
                 data: "attr",
                 render: function (data, type, row, meta) {
                     var html = ["<ul>"];
+                    data = data.replace(/\n/g, "");
                     $.each(JSON.parse(data), function (k, v) {
                         html.push('<li>', k, ": ", v, '</li>');
                     });
