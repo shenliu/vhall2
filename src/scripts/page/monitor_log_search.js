@@ -214,10 +214,7 @@ function monitor_log_search_table(id, host, module, code, type, date, timeStart,
             , "lengthMenu": [[25, 50, 75, 100, -1], [25, 50, 75, 100, '全部']]
             , "ajax": {
                 "url": url,
-                "dataSrc": function (json) {
-                    console.log(json);
-                    return json;
-                }
+                "dataSrc": ""
             }
             , "order": [[4, "desc"]]
             , "columns": [{

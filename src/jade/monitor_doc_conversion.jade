@@ -7,6 +7,14 @@ block title
     title 文档转换
 
 block content
+    style.
+        td ul li {
+            width: 400px;
+            word-break: break-all;
+            white-space: normal;
+            padding: 2px 0;
+        }
+
     div.ui.main.container.raised.segment#container.vh-container
         h2(class="ui header vh-table")
             i(class="copy icon")
@@ -25,6 +33,13 @@ block content
                     th 转换任务完成
                     th 转换时长(秒)
                     th 转换任务失败
+                    th 无需转换
+                    th 解析校验任务数据失败
+                    th 服务执行执行异常
+                    th 文档MD5不匹配
+                    th 转换为MS Office PPT失败
+                    th 磁盘IO错误
+                    th 转换服务异常退出
             tfoot
                 tr
                     th ID
@@ -37,4 +52,11 @@ block content
                     th 转换任务完成
                     th 转换时长(秒)
                     th 转换任务失败
+                    th 无需转换
+                    th 解析校验任务数据失败
+                    th 服务执行执行异常
+                    th 文档MD5不匹配
+                    th 转换为MS Office PPT失败
+                    th 磁盘IO错误
+                    th 转换服务异常退出
             tbody

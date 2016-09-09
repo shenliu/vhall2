@@ -59,21 +59,21 @@ function monitor_doc_conversion_table() {
                 // session ID idx: 2
                 data: "sessionID"
             }, {
-                // 232101 转换服务启动 idx: 3
-                data: "232101",
+                // 232001 转换服务启动 idx: 3
+                data: "232001",
                 render: function (data, type, row, meta) {
                     if (data) {
-                        return _html("232101", row, table, meta);
+                        return _html("232001", row, table, meta);
                     } else {
                         return "-";
                     }
                 }
             }, {
-                // 232001 成功收到任务 idx: 4
-                data: "232001",
+                // 232002 成功收到任务 idx: 4
+                data: "232002",
                 render: function (data, type, row, meta) {
                     if (data) {
-                        return _html("232001", row, table, meta);
+                        return _html("232002", row, table, meta);
                     } else {
                         return "-";
                     }
@@ -89,28 +89,28 @@ function monitor_doc_conversion_table() {
                     }
                 }
             }, {
-                // 232011 转换任务开始 idx: 6
-                data: "232011",
+                // 232003 转换任务开始 idx: 6
+                data: "232003",
                 render: function (data, type, row, meta) {
                     if (data) {
-                        return _html("232011", row, table, meta);
+                        return _html("232003", row, table, meta);
                     } else {
                         return "-";
                     }
                 }
             }, {
-                // 232002 转换任务完成 idx: 7
-                data: "232002",
+                // 232004 转换任务完成 idx: 7
+                data: "232004",
                 render: function (data, type, row, meta) {
                     if (data) {
-                        return _html("232002", row, table, meta);
+                        return _html("232004", row, table, meta);
                     } else {
                         return "-";
                     }
                 }
             }, {
-                // 转换时长(秒)
-                data: "234011",
+                // 转换时长(秒) idx: 8
+                data: "234007",
                 render: function(data, type, row, meta) {
                     if (data) { // 如果转换任务失败 就返回"-"
                         return "-";
@@ -119,11 +119,81 @@ function monitor_doc_conversion_table() {
                     }
                 }
             }, {
-                // 234011 转换任务失败 idx: 8
-                data: "234011",
+                // 234007 转换任务失败 idx: 9
+                data: "234007",
                 render: function (data, type, row, meta) {
                     if (data) {
-                        return _html("234011", row, table, meta);
+                        return _html("234007", row, table, meta);
+                    } else {
+                        return "-";
+                    }
+                }
+            }, {
+                // 232005 无需转换 idx: 10
+                data: "232005",
+                render: function (data, type, row, meta) {
+                    if (data) {
+                        return _html("232005", row, table, meta);
+                    } else {
+                        return "-";
+                    }
+                }
+            }, {
+                // 234002 解析校验任务数据失败 idx: 11
+                data: "234002",
+                render: function (data, type, row, meta) {
+                    if (data) {
+                        return _html("234002", row, table, meta);
+                    } else {
+                        return "-";
+                    }
+                }
+            }, {
+                // 234003 服务执行执行异常 idx: 12
+                data: "234003",
+                render: function (data, type, row, meta) {
+                    if (data) {
+                        return _html("234003", row, table, meta);
+                    } else {
+                        return "-";
+                    }
+                }
+            }, {
+                // 234004 文档MD5不匹配 idx: 13
+                data: "234004",
+                render: function (data, type, row, meta) {
+                    if (data) {
+                        return _html("234004", row, table, meta);
+                    } else {
+                        return "-";
+                    }
+                }
+            }, {
+                // 234005 转换为MS Office PPT失败 idx: 14
+                data: "234005",
+                render: function (data, type, row, meta) {
+                    if (data) {
+                        return _html("234005", row, table, meta);
+                    } else {
+                        return "-";
+                    }
+                }
+            }, {
+                // 234006 磁盘IO错误 idx: 15
+                data: "234006",
+                render: function (data, type, row, meta) {
+                    if (data) {
+                        return _html("234006", row, table, meta);
+                    } else {
+                        return "-";
+                    }
+                }
+            }, {
+                // 234008 转换服务异常退出 idx: 16
+                data: "234008",
+                render: function (data, type, row, meta) {
+                    if (data) {
+                        return _html("234008", row, table, meta);
                     } else {
                         return "-";
                     }
@@ -149,10 +219,10 @@ function _html(code, row, table, meta) {
 
 function _last(row, table, meta) {
     // 转换任务开始
-    var str_start = row["232011"];
+    var str_start = row["232003"];
 
     // 转换任务完成
-    var str_end = row["232002"];
+    var str_end = row["232004"];
     if (!str_start || !str_end) {
         return "-";
     }
