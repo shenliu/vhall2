@@ -58,7 +58,7 @@ function monitor_table() {
             render: function(data, type, row, meta) {
                 if (data) {
                     var id = data.substring(0, 32);
-                    var html = ["<a href='monitor_channel_status.html?id=", id, "' target='_blank'>", id, "</a>"];
+                    var html = ["<a href='./monitor_channel_status.html?id=", id, "' target='_blank'>", id, "</a>"];
                     return html.join("");
                 } else
                     return "-";

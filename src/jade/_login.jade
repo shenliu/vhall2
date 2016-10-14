@@ -5,7 +5,8 @@ div.ui.middle.aligned.center.aligned.grid.vh-login-box
     div.column
         h2.ui.vh-color-font.header
             div.content 登录至您的帐号
-        form.ui.large.form.vh-login-form
+        form(method="post").ui.large.form.vh-login-form
+            |{{ form.csrf_token }}
             div.ui.stacked.segment
                 div.field
                     div.ui.left.icon.input
@@ -16,4 +17,11 @@ div.ui.middle.aligned.center.aligned.grid.vh-login-box
                         i.lock.icon
                         input(type="password", name="password", placeholder="密码", value="123456")
                 div.ui.fluid.large.vh-color-bg.submit.button 登录
-            div.ui.error.message
+
+                |{% with messages = get_flashed_messages() %}
+                |{% if messages %}
+                |{% for message in messages %}
+                div.ui.error.message {{ message }}
+                |{% endfor %}
+                |{% endif %}
+                |{% endwith %}

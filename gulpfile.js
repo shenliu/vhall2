@@ -28,7 +28,9 @@ gulp.task('todo', function() {
 });
 
 gulp.task('copy', function() {
-    gulp.src('./dist/**/*').pipe(gulp.dest('../kgb2.0/actor/static/'));
+    //gulp.src('./dist/**/*').pipe(gulp.dest('../kgb2.0/actor/static/'));
+    gulp.src('./dist/*.html').pipe(gulp.dest('../kgb3.0/templates/'));
+    gulp.src(['./dist/**/*', '!./dist/*.html']).pipe(gulp.dest('../kgb3.0/static/'));
 });
 
 //---------------------------------------------------------------//

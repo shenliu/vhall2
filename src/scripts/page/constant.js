@@ -51,6 +51,7 @@ export var Constant = {
         '22402': 'aac ffmpeg结束成功',
         '24403': 'aac Encoder会话异常终止',
         '24404': 'aac ffmpeg进程异常重启',
+        '24405': 'aac ffmpeg进程启动失败（fork()内存不足）',
         '24501': 'edge→core建立链路失败',
         '24502': 'edge→core发送数据失败',
         '24503': 'edge→core数据队列shrink',
@@ -315,7 +316,9 @@ export var Constant = {
     },
 
     url: {
-        login: host + "login",
+        //login: host + "login",
+
+        login: "/verification",
 
         // stream: table数据
         monitor_stream: host + "stream_real_status",

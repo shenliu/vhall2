@@ -54,8 +54,8 @@ function constraint() {
 
         onSuccess: function (e) {
             e.preventDefault();
-            var form = $(".vh-login-form");
-            var user = form.find("[name='username']").val();
+            var form = $(".vh-login-form")[0];
+            /*var user = form.find("[name='username']").val();
             var pass = form.find("[name='password']").val();
             $.ajax({
                 url: Constant.url.login,
@@ -75,7 +75,10 @@ function constraint() {
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     console.log(XMLHttpRequest, textStatus, errorThrown);
                 }
-            });
+            });*/
+            form.action = Constant.url.login;
+            //form.method = "POST";
+            form.submit();
         }
     });
 }
